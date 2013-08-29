@@ -24,20 +24,20 @@ logger = logging.getLogger(__package__)
 @view_config(route_name='trackers', renderer='json')
 def trackers(request):
     cur = request.db.cursor()
+    return {'trackers': fetchTrackers(cur)}
 
+
+def fetchTrackers(cur):
     data = []
     cur.execute("SELECT device_info_serial as id FROM gps.uva_device ORDER BY device_info_serial")
     for row in cur:
         row = dict(row)
         data.append(row)
 
-    cur.close()
-    return {'trackers': data}
+    return data
 
 
-def fetch(cur, trackerId, start, end):
-    freq = 20.0
-
+def fetchAcceleration(cur, trackerId, start, end, freq=20.0):
     accels = {}
     sql1  = 'SELECT date_time, index, (x_acceleration-x_o)/x_s x_acceleration, '
     sql1 += '(y_acceleration-y_o)/y_s y_acceleration, (z_acceleration-z_o)/z_s z_acceleration '
@@ -56,7 +56,10 @@ def fetch(cur, trackerId, start, end):
         except ValueError:
             continue
 
-    data = []
+    return accels
+
+
+def fetchTrack(cur, trackerId, start, end):
     sql2  = 'SELECT date_time, s.latitude, s.longitude, s.altitude, s.pressure, '
     sql2 += 's.temperature, s.satellites_used, s.gps_fixtime, s.positiondop, '
     sql2 += 's.h_accuracy, s.v_accuracy, s.x_speed, s.y_speed, s.z_speed,s.speed_accuracy, '
@@ -68,7 +71,15 @@ def fetch(cur, trackerId, start, end):
     sql2 += 'date_time BETWEEN %s AND %s AND userflag != %s '
     sql2 += 'ORDER BY date_time'
     cur.execute(sql2, (trackerId, start, end, trackerId, start, end, "1"))
-    for row in cur:
+    return cur.fetchAll()
+
+
+def fetch(cur, trackerId, start, end):
+    accels = fetchAcceleration(cur, trackerId, start, end)
+    rows = fetchTrack(cur, trackerId, start, end)
+
+    data = []
+    for row in rows:
         row = dict(row)
         if row['date_time'] in accels:
             row['accels'] = accels[row['date_time']]
@@ -91,7 +102,6 @@ def fetch(cur, trackerId, start, end):
         except TypeError:
             continue
 
-    cur.close()
     return data
 
 

@@ -12,7 +12,7 @@ requires = [
     'psycopg2',
     'mock',
     'waitress',
-    'nosetests',
+    'nose',
     'coverage',
     ]
 

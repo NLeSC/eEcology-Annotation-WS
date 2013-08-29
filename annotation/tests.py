@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from datetime import datetime
 import unittest
 from UserList import UserList
 from mock import Mock
@@ -26,19 +27,52 @@ class ViewTests(unittest.TestCase):
     def tearDown(self):
         testing.tearDown()
 
-    def test_trackers(self):
-        request = testing.DummyRequest()
-        cursor = UserList([{'id':1}])
-        cursor.close = Mock()
+    def test_fetchTrackers(self):
+        rows = [{'id':1}]
+        cursor = UserList(rows)
         cursor.execute = Mock()
-        db = Mock()
-        db.cursor = Mock(return_value=cursor)
-        request.db = db
 
-        result = views.trackers(request)
+        result = views.fetchTrackers(cursor)
 
         sql = 'SELECT device_info_serial as id '
         sql += 'FROM gps.uva_device ORDER BY device_info_serial'
         cursor.execute.assert_called_with(sql)
-        cursor.close.assert_called_with()
-        self.assertEqual(result, {'trackers': [{'id':1}]})
+        self.assertEqual(result, [{'id':1}])
+
+    def test_fetchAcceleration(self):
+        rows = [{
+                 'date_time': datetime(2013,8,29,10,0,0),
+                 'index': 0,
+                 'x_acceleration': 1.0,
+                 'y_acceleration': 1.0,
+                 'z_acceleration': 1.0,
+                 }, {
+                 'date_time': datetime(2013,8,29,10,0,0),
+                 'index': 1,
+                 'x_acceleration': 2.0,
+                 'y_acceleration': 3.0,
+                 'z_acceleration': 4.0,
+                 }]
+        cursor = UserList(rows)
+        cursor.execute = Mock()
+        trackerId = 1234
+        start = datetime(2013,8,29,9,0,0)
+        end = datetime(2013,8,29,11,0,0)
+
+        results = views.fetchAcceleration(cursor, trackerId, start, end)
+
+        expected = {
+                    datetime(2013,8,29,10,0,0): [{
+                                                  'time': 0.0,
+                                                  'x_acceleration': 1.0,
+                                                  'y_acceleration': 1.0,
+                                                  'z_acceleration': 1.0,
+                                                  }, {
+                                                  'time': 0.05,
+                                                  'x_acceleration': 2.0,
+                                                  'y_acceleration': 3.0,
+                                                  'z_acceleration': 4.0,
+                                                  }]
+                    }
+        self.assertEqual(results, expected)
+

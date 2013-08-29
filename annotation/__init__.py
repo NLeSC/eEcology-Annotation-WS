@@ -25,7 +25,7 @@ def dbsession(dsn):
 
 def _connect(request):
     settings = request.registry.settings
-    conn = request.registry.dbsession(settings['dsn'])
+    conn = dbsession(settings['dsn'])
 
     def cleanup(_):
         conn.close()
