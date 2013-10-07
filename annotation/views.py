@@ -71,7 +71,7 @@ def fetchTrack(cur, trackerId, start, end):
     sql2 += 'date_time BETWEEN %s AND %s AND userflag != %s '
     sql2 += 'ORDER BY date_time'
     cur.execute(sql2, (trackerId, start, end, trackerId, start, end, "1"))
-    return cur.fetchAll()
+    return cur
 
 
 def fetch(cur, trackerId, start, end):
