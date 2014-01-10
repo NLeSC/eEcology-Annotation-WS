@@ -24,12 +24,12 @@ logger = logging.getLogger(__package__)
 @view_config(route_name='trackers', renderer='json')
 def trackers(request):
     cur = request.db.cursor()
-    return {'trackers': fetchTrackers(cur)}
+    return {'trackers': fetchTrackers(cur, request.user)}
 
 
-def fetchTrackers(cur):
+def fetchTrackers(cur, username):
     data = []
-    cur.execute("SELECT device_info_serial as id FROM gps.uva_device ORDER BY device_info_serial")
+    cur.execute("SELECT device_info_serial as id FROM gps.uva_device JOIN uva_access_device USING (device_info_serial) WHERE username=%s ORDER BY device_info_serial", (username))
     for row in cur:
         row = dict(row)
         data.append(row)
@@ -37,14 +37,16 @@ def fetchTrackers(cur):
     return data
 
 
-def fetchAcceleration(cur, trackerId, start, end, freq=20.0):
+def fetchAcceleration(cur, username, trackerId, start, end, freq=20.0):
     accels = {}
     sql1  = 'SELECT date_time, index, (x_acceleration-x_o)/x_s x_acceleration, '
     sql1 += '(y_acceleration-y_o)/y_s y_acceleration, (z_acceleration-z_o)/z_s z_acceleration '
     sql1 += 'FROM gps.uva_acceleration101 '
     sql1 += 'JOIN gps.uva_device USING (device_info_serial) '
-    sql1 += 'WHERE device_info_serial = %s and date_time between %s and %s'
-    cur.execute(sql1, (trackerId, start, end))
+    sql1 += 'JOIN uva_access_device USING (device_info_serial)'
+    sql1 += 'WHERE device_info_serial=%s and date_time BETWEEN %s AND %s AND username=%s '
+    sql1 += 'ORDER BY date_time, index'
+    cur.execute(sql1, (trackerId, start, end, username))
     for row in cur:
         if row['date_time'] not in accels:
             accels[row['date_time']] = []
@@ -59,7 +61,7 @@ def fetchAcceleration(cur, trackerId, start, end, freq=20.0):
     return accels
 
 
-def fetchTrack(cur, trackerId, start, end):
+def fetchTrack(cur, username, trackerId, start, end):
     sql2  = 'SELECT date_time, s.latitude, s.longitude, s.altitude, s.pressure, '
     sql2 += 's.temperature, s.satellites_used, s.gps_fixtime, s.positiondop, '
     sql2 += 's.h_accuracy, s.v_accuracy, s.x_speed, s.y_speed, s.z_speed,s.speed_accuracy, '
@@ -67,16 +69,17 @@ def fetchTrack(cur, trackerId, start, end):
     sql2 += 't.speed as tspeed, t.direction as tdirection '
     sql2 += 'FROM gps.uva_tracking_speed s '
     sql2 += 'JOIN gps.get_uvagps_track_speed(%s, %s, %s) t USING (device_info_serial, date_time)'
+    sql2 += 'JOIN uva_access_device USING (device_info_serial)'
     sql2 += 'WHERE device_info_serial = %s AND '
-    sql2 += 'date_time BETWEEN %s AND %s AND userflag != %s '
+    sql2 += 'date_time BETWEEN %s AND %s AND userflag != %s AND username=%s '
     sql2 += 'ORDER BY date_time'
-    cur.execute(sql2, (trackerId, start, end, trackerId, start, end, "1"))
+    cur.execute(sql2, (trackerId, start, end, trackerId, start, end, "1", username))
     return cur
 
 
-def fetch(cur, trackerId, start, end):
-    accels = fetchAcceleration(cur, trackerId, start, end)
-    rows = fetchTrack(cur, trackerId, start, end)
+def fetch(cur, username, trackerId, start, end):
+    accels = fetchAcceleration(cur, username, trackerId, start, end)
+    rows = fetchTrack(cur, username, trackerId, start, end)
 
     data = []
     for row in rows:
@@ -111,4 +114,5 @@ def tracker(request):
     trackerId = request.matchdict['id']
     start = datetime.datetime.utcfromtimestamp(float(request.matchdict['start']))
     end = datetime.datetime.utcfromtimestamp(float(request.matchdict['end']))
-    return fetch(cur, trackerId, start, end)
+    return fetch(cur, request.user, trackerId, start, end)
+
