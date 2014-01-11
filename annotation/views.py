@@ -14,8 +14,6 @@
 
 import datetime
 import logging
-import psycopg2
-import psycopg2.extras
 from pyramid.view import view_config
 
 logger = logging.getLogger(__package__)
@@ -39,7 +37,7 @@ def fetchTrackers(cur):
 
 def fetchAcceleration(cur, trackerId, start, end, freq=20.0):
     accels = {}
-    sql1  = 'SELECT date_time, index, (x_acceleration-x_o)/x_s x_acceleration, '
+    sql1 = 'SELECT date_time, index, (x_acceleration-x_o)/x_s x_acceleration, '
     sql1 += '(y_acceleration-y_o)/y_s y_acceleration, (z_acceleration-z_o)/z_s z_acceleration '
     sql1 += 'FROM gps.uva_acceleration101 '
     sql1 += 'JOIN gps.uva_device USING (device_info_serial) '
@@ -60,7 +58,7 @@ def fetchAcceleration(cur, trackerId, start, end, freq=20.0):
 
 
 def fetchTrack(cur, trackerId, start, end):
-    sql2  = 'SELECT date_time, s.latitude, s.longitude, s.altitude, s.pressure, '
+    sql2 = 'SELECT date_time, s.latitude, s.longitude, s.altitude, s.pressure, '
     sql2 += 's.temperature, s.satellites_used, s.gps_fixtime, s.positiondop, '
     sql2 += 's.h_accuracy, s.v_accuracy, s.x_speed, s.y_speed, s.z_speed,s.speed_accuracy, '
     sql2 += 's.vnorth, s.veast, s.vdown, s.speed, s.speed3d, s.direction, '
@@ -87,11 +85,14 @@ def fetch(cur, trackerId, start, end):
             row['latitude'] = round(float(row['latitude']), 4)
             row['longitude'] = round(float(row['longitude']), 4)
             row['satellites_used'] = int(row['satellites_used'])
-            for x in ['altitude', 'temperature', "gps_fixtime","positiondop",
-                      "h_accuracy","v_accuracy","x_speed","y_speed","z_speed",
-                      "speed_accuracy","vnorth","veast","vdown",
-                      "speed","speed3d", "direction",
-                      "tspeed", "tdirection"
+            for x in ['altitude', 'temperature', 
+                      "gps_fixtime", "positiondop",
+                      "h_accuracy", "v_accuracy", 
+                      "x_speed", "y_speed", "z_speed",
+                      "speed_accuracy", 
+                      "vnorth", "veast", "vdown",
+                      "speed", "speed3d", "direction",
+                      "tspeed", "tdirection",
                       ]:
                 if row[x] is not None:
                     row[x] = float(row[x])
@@ -109,6 +110,7 @@ def fetch(cur, trackerId, start, end):
 def tracker(request):
     cur = request.db.cursor()
     trackerId = request.matchdict['id']
-    start = datetime.datetime.utcfromtimestamp(float(request.matchdict['start']))
-    end = datetime.datetime.utcfromtimestamp(float(request.matchdict['end']))
+    ts2utc = datetime.datetime.utcfromtimestamp
+    start = ts2utc(float(request.matchdict['start']))
+    end = ts2utc(float(request.matchdict['end']))
     return fetch(cur, trackerId, start, end)
