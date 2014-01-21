@@ -27,7 +27,7 @@ def trackers(request):
 
 def fetchTrackers(cur, username):
     data = []
-    cur.execute("SELECT device_info_serial as id FROM gps.uva_device JOIN gps.uva_access_device USING (device_info_serial) WHERE username=%s ORDER BY device_info_serial", (username))
+    cur.execute("SELECT device_info_serial as id FROM gps.uva_device JOIN gps.uva_access_device USING (device_info_serial) WHERE username=%s ORDER BY device_info_serial", (username,))
     for row in cur:
         row = dict(row)
         data.append(row)
@@ -44,15 +44,15 @@ def fetchAcceleration(cur, username, trackerId, start, end, freq=20.0):
     sql1 += 'JOIN gps.uva_access_device USING (device_info_serial)'
     sql1 += 'WHERE device_info_serial=%s and date_time BETWEEN %s AND %s AND username=%s '
     sql1 += 'ORDER BY date_time, index'
-    cur.execute(sql1, (trackerId, start, end, username))
+    cur.execute(sql1, (trackerId, start, end, username,))
     for row in cur:
         if row['date_time'] not in accels:
             accels[row['date_time']] = []
         try:
-            accels[row['date_time']].append({'time':int(row['index'])/freq,  # use 20Hz as freq
-                                             "x_acceleration":row["x_acceleration"],
-                                             "y_acceleration":row["y_acceleration"],
-                                             "z_acceleration":row["z_acceleration"]})
+            accels[row['date_time']].append({'time': int(row['index'])/freq,  # use 20Hz as freq
+                                             "x_acceleration": row["x_acceleration"],
+                                             "y_acceleration": row["y_acceleration"],
+                                             "z_acceleration": row["z_acceleration"]})
         except ValueError:
             continue
 
@@ -61,7 +61,7 @@ def fetchAcceleration(cur, username, trackerId, start, end, freq=20.0):
 
 def fetchTrack(cur, username, trackerId, start, end):
     sql2 = 'SELECT date_time, s.latitude, s.longitude, s.altitude, s.pressure, '
-    sql2 += 's.temperature, s.satellites_used, s.gps_fixtime, s.positiondop, '
+    sql2 += 's.temperature, s.gps_fixtime, s.positiondop, '
     sql2 += 's.h_accuracy, s.v_accuracy, s.x_speed, s.y_speed, s.z_speed,s.speed_accuracy, '
     sql2 += 's.vnorth, s.veast, s.vdown, s.speed, s.speed3d, s.direction, '
     sql2 += 't.speed as tspeed, t.direction as tdirection '
@@ -71,7 +71,7 @@ def fetchTrack(cur, username, trackerId, start, end):
     sql2 += 'WHERE device_info_serial = %s AND '
     sql2 += 'date_time BETWEEN %s AND %s AND userflag != %s AND username=%s '
     sql2 += 'ORDER BY date_time'
-    cur.execute(sql2, (trackerId, start, end, trackerId, start, end, "1", username))
+    cur.execute(sql2, (trackerId, start, end, trackerId, start, end, "1", username,))
     return cur
 
 
@@ -87,7 +87,6 @@ def fetch(cur, username, trackerId, start, end):
         try:
             row['latitude'] = round(float(row['latitude']), 4)
             row['longitude'] = round(float(row['longitude']), 4)
-            row['satellites_used'] = int(row['satellites_used'])
             for x in ['altitude', 'temperature',
                       "gps_fixtime", "positiondop",
                       "h_accuracy", "v_accuracy",

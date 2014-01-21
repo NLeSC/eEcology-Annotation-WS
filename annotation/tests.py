@@ -43,7 +43,7 @@ class ViewTests(unittest.TestCase):
         expected_sql += 'JOIN gps.uva_access_device USING (device_info_serial) '
         expected_sql += 'WHERE username=%s '
         expected_sql += 'ORDER BY device_info_serial'
-        cursor.execute.assert_called_with(expected_sql, 'me')
+        cursor.execute.assert_called_with(expected_sql, ('me',))
 
     def test_fetchTrackers(self):
         rows = [{'id':1}]
@@ -57,7 +57,7 @@ class ViewTests(unittest.TestCase):
         sql += 'JOIN gps.uva_access_device USING (device_info_serial) '
         sql += 'WHERE username=%s '
         sql += 'ORDER BY device_info_serial'
-        cursor.execute.assert_called_with(sql, 'me')
+        cursor.execute.assert_called_with(sql, ('me',))
         self.assertEqual(result, [{'id':1}])
 
     def test_fetchAcceleration(self):
