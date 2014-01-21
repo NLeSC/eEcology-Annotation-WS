@@ -40,7 +40,7 @@ class ViewTests(unittest.TestCase):
         self.assertEquals(response, expected)
         expected_sql = 'SELECT device_info_serial as id '
         expected_sql += 'FROM gps.uva_device '
-        expected_sql += 'JOIN uva_access_device USING (device_info_serial) '
+        expected_sql += 'JOIN gps.uva_access_device USING (device_info_serial) '
         expected_sql += 'WHERE username=%s '
         expected_sql += 'ORDER BY device_info_serial'
         cursor.execute.assert_called_with(expected_sql, 'me')
@@ -54,7 +54,7 @@ class ViewTests(unittest.TestCase):
 
         sql = 'SELECT device_info_serial as id '
         sql += 'FROM gps.uva_device '
-        sql += 'JOIN uva_access_device USING (device_info_serial) '
+        sql += 'JOIN gps.uva_access_device USING (device_info_serial) '
         sql += 'WHERE username=%s '
         sql += 'ORDER BY device_info_serial'
         cursor.execute.assert_called_with(sql, 'me')

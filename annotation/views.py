@@ -27,7 +27,7 @@ def trackers(request):
 
 def fetchTrackers(cur, username):
     data = []
-    cur.execute("SELECT device_info_serial as id FROM gps.uva_device JOIN uva_access_device USING (device_info_serial) WHERE username=%s ORDER BY device_info_serial", (username))
+    cur.execute("SELECT device_info_serial as id FROM gps.uva_device JOIN gps.uva_access_device USING (device_info_serial) WHERE username=%s ORDER BY device_info_serial", (username))
     for row in cur:
         row = dict(row)
         data.append(row)
@@ -41,7 +41,7 @@ def fetchAcceleration(cur, username, trackerId, start, end, freq=20.0):
     sql1 += '(y_acceleration-y_o)/y_s y_acceleration, (z_acceleration-z_o)/z_s z_acceleration '
     sql1 += 'FROM gps.uva_acceleration101 '
     sql1 += 'JOIN gps.uva_device USING (device_info_serial) '
-    sql1 += 'JOIN uva_access_device USING (device_info_serial)'
+    sql1 += 'JOIN gps.uva_access_device USING (device_info_serial)'
     sql1 += 'WHERE device_info_serial=%s and date_time BETWEEN %s AND %s AND username=%s '
     sql1 += 'ORDER BY date_time, index'
     cur.execute(sql1, (trackerId, start, end, username))
@@ -60,14 +60,14 @@ def fetchAcceleration(cur, username, trackerId, start, end, freq=20.0):
 
 
 def fetchTrack(cur, username, trackerId, start, end):
-    sql2  = 'SELECT date_time, s.latitude, s.longitude, s.altitude, s.pressure, '
+    sql2 = 'SELECT date_time, s.latitude, s.longitude, s.altitude, s.pressure, '
     sql2 += 's.temperature, s.satellites_used, s.gps_fixtime, s.positiondop, '
     sql2 += 's.h_accuracy, s.v_accuracy, s.x_speed, s.y_speed, s.z_speed,s.speed_accuracy, '
     sql2 += 's.vnorth, s.veast, s.vdown, s.speed, s.speed3d, s.direction, '
     sql2 += 't.speed as tspeed, t.direction as tdirection '
     sql2 += 'FROM gps.uva_tracking_speed s '
     sql2 += 'JOIN gps.get_uvagps_track_speed(%s, %s, %s) t USING (device_info_serial, date_time)'
-    sql2 += 'JOIN uva_access_device USING (device_info_serial)'
+    sql2 += 'JOIN gps.uva_access_device USING (device_info_serial)'
     sql2 += 'WHERE device_info_serial = %s AND '
     sql2 += 'date_time BETWEEN %s AND %s AND userflag != %s AND username=%s '
     sql2 += 'ORDER BY date_time'
