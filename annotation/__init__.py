@@ -22,6 +22,7 @@ from pyramid.events import subscriber
 from pyramid.security import Allow, Authenticated, ALL_PERMISSIONS, DENY_ALL
 from pyramid.security import unauthenticated_userid
 
+
 def dbsession(dsn):
     return psycopg2.connect(dsn, cursor_factory=psycopg2.extras.DictCursor)
 
@@ -42,8 +43,10 @@ def new_request(event):
     request = event.request
     request.set_property(_connect, 'db', reify=True)
 
+
 def get_user(request):
     return unauthenticated_userid(request)
+
 
 class RootFactory(object):
     __acl__ = [(Allow, Authenticated, ALL_PERMISSIONS), DENY_ALL]
