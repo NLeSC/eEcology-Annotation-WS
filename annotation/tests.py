@@ -27,16 +27,37 @@ class ViewTests(unittest.TestCase):
     def tearDown(self):
         testing.tearDown()
 
+    def test_trackers(self):
+        request = testing.DummyRequest()
+        request.user = 'me'
+        cursor = UserList([{'id': 355}])
+        cursor.execute = Mock()
+        request.db = Mock()
+        request.db.cursor.return_value = cursor
+        response = views.trackers(request)
+
+        expected = {'trackers': [{'id': 355}]}
+        self.assertEquals(response, expected)
+        expected_sql = 'SELECT device_info_serial as id '
+        expected_sql += 'FROM gps.uva_device '
+        expected_sql += 'JOIN gps.uva_access_device USING (device_info_serial) '
+        expected_sql += 'WHERE username=%s '
+        expected_sql += 'ORDER BY device_info_serial'
+        cursor.execute.assert_called_with(expected_sql, ('me',))
+
     def test_fetchTrackers(self):
         rows = [{'id':1}]
         cursor = UserList(rows)
         cursor.execute = Mock()
 
-        result = views.fetchTrackers(cursor)
+        result = views.fetchTrackers(cursor, 'me')
 
         sql = 'SELECT device_info_serial as id '
-        sql += 'FROM gps.uva_device ORDER BY device_info_serial'
-        cursor.execute.assert_called_with(sql)
+        sql += 'FROM gps.uva_device '
+        sql += 'JOIN gps.uva_access_device USING (device_info_serial) '
+        sql += 'WHERE username=%s '
+        sql += 'ORDER BY device_info_serial'
+        cursor.execute.assert_called_with(sql, ('me',))
         self.assertEqual(result, [{'id':1}])
 
     def test_fetchAcceleration(self):
@@ -59,7 +80,7 @@ class ViewTests(unittest.TestCase):
         start = datetime(2013,8,29,9,0,0)
         end = datetime(2013,8,29,11,0,0)
 
-        results = views.fetchAcceleration(cursor, trackerId, start, end)
+        results = views.fetchAcceleration(cursor, 'me', trackerId, start, end)
 
         expected = {
                     datetime(2013,8,29,10,0,0): [{
