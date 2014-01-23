@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from UserList import UserList
 from datetime import datetime
 import unittest
-from UserList import UserList
+from iso8601.iso8601 import UTC
 from mock import Mock
 from pyramid import testing
 import annotation.views as views
@@ -62,13 +63,13 @@ class ViewTests(unittest.TestCase):
 
     def test_fetchAcceleration(self):
         rows = [{
-                 'date_time': datetime(2013,8,29,10,0,0),
+                 'date_time': datetime(2013,8,29,10,0,0).replace(tzinfo=UTC),
                  'index': 0,
                  'x_acceleration': 1.0,
                  'y_acceleration': 1.0,
                  'z_acceleration': 1.0,
                  }, {
-                 'date_time': datetime(2013,8,29,10,0,0),
+                 'date_time': datetime(2013,8,29,10,0,0).replace(tzinfo=UTC),
                  'index': 1,
                  'x_acceleration': 2.0,
                  'y_acceleration': 3.0,
@@ -77,22 +78,22 @@ class ViewTests(unittest.TestCase):
         cursor = UserList(rows)
         cursor.execute = Mock()
         trackerId = 1234
-        start = datetime(2013,8,29,9,0,0)
-        end = datetime(2013,8,29,11,0,0)
+        start = datetime(2013,8,29,9,0,0).replace(tzinfo=UTC)
+        end = datetime(2013,8,29,11,0,0).replace(tzinfo=UTC)
 
         results = views.fetchAcceleration(cursor, 'me', trackerId, start, end)
 
         expected = {
-                    datetime(2013,8,29,10,0,0): [{
+                    '2013-08-29T10:00:00+00:00': [{
                                                   'time': 0.0,
-                                                  'x_acceleration': 1.0,
-                                                  'y_acceleration': 1.0,
-                                                  'z_acceleration': 1.0,
+                                                  'xa': 1.0,
+                                                  'ya': 1.0,
+                                                  'za': 1.0,
                                                   }, {
                                                   'time': 0.05,
-                                                  'x_acceleration': 2.0,
-                                                  'y_acceleration': 3.0,
-                                                  'z_acceleration': 4.0,
+                                                  'xa': 2.0,
+                                                  'ya': 3.0,
+                                                  'za': 4.0,
                                                   }]
                     }
         self.assertEqual(results, expected)

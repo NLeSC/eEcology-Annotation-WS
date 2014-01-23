@@ -14,6 +14,8 @@
 
 import datetime
 import logging
+from iso8601 import parse_date
+from iso8601.iso8601 import UTC
 from pyramid.view import view_config
 
 logger = logging.getLogger(__package__)
@@ -46,13 +48,17 @@ def fetchAcceleration(cur, username, trackerId, start, end, freq=20.0):
     sql1 += 'ORDER BY date_time, index'
     cur.execute(sql1, (trackerId, start, end, username,))
     for row in cur:
+        y = row['date_time']
+        e = y.replace(tzinfo=UTC)
+        z = e.isoformat()
+        row['date_time'] = z
         if row['date_time'] not in accels:
             accels[row['date_time']] = []
         try:
             accels[row['date_time']].append({'time': int(row['index'])/freq,  # use 20Hz as freq
-                                             "x_acceleration": row["x_acceleration"],
-                                             "y_acceleration": row["y_acceleration"],
-                                             "z_acceleration": row["z_acceleration"]})
+                                             "xa": row["x_acceleration"],
+                                             "ya": row["y_acceleration"],
+                                             "za": row["z_acceleration"]})
         except ValueError:
             continue
 
@@ -66,8 +72,8 @@ def fetchTrack(cur, username, trackerId, start, end):
     sql2 += 's.vnorth, s.veast, s.vdown, s.speed, s.speed3d, s.direction, '
     sql2 += 't.speed as tspeed, t.direction as tdirection '
     sql2 += 'FROM gps.uva_tracking_speed s '
-    sql2 += 'JOIN gps.get_uvagps_track_speed(%s, %s, %s) t USING (device_info_serial, date_time)'
-    sql2 += 'JOIN gps.uva_access_device USING (device_info_serial)'
+    sql2 += 'JOIN gps.get_uvagps_track_speed(%s, %s, %s) t USING (device_info_serial, date_time) '
+    sql2 += 'JOIN gps.uva_access_device USING (device_info_serial) '
     sql2 += 'WHERE device_info_serial = %s AND '
     sql2 += 'date_time BETWEEN %s AND %s AND userflag != %s AND username=%s '
     sql2 += 'ORDER BY date_time'
@@ -82,6 +88,7 @@ def fetch(cur, username, trackerId, start, end):
     data = []
     for row in rows:
         row = dict(row)
+        row['date_time'] = row['date_time'].replace(tzinfo=UTC).isoformat()
         if row['date_time'] in accels:
             row['accels'] = accels[row['date_time']]
         try:
@@ -98,7 +105,6 @@ def fetch(cur, username, trackerId, start, end):
                       ]:
                 if row[x] is not None:
                     row[x] = float(row[x])
-            row['date_time'] = row['date_time'].isoformat()
             data.append(row)
         except ValueError:
             continue
@@ -111,8 +117,7 @@ def fetch(cur, username, trackerId, start, end):
 @view_config(route_name='tracker', renderer='json')
 def tracker(request):
     cur = request.db.cursor()
-    trackerId = request.matchdict['id']
-    ts2utc = datetime.datetime.utcfromtimestamp
-    start = ts2utc(float(request.matchdict['start']))
-    end = ts2utc(float(request.matchdict['end']))
+    trackerId = int(request.matchdict['id'])
+    start = parse_date(request.matchdict['start']).isoformat()
+    end = parse_date(request.matchdict['end']).isoformat()
     return fetch(cur, request.user, trackerId, start, end)

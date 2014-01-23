@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 import psycopg2
 import psycopg2.extras
 from pyramid.authentication import RemoteUserAuthenticationPolicy
@@ -21,6 +22,8 @@ from pyramid.events import NewRequest
 from pyramid.events import subscriber
 from pyramid.security import Allow, Authenticated, ALL_PERMISSIONS, DENY_ALL
 from pyramid.security import unauthenticated_userid
+
+logger = logging.getLogger(__package__)
 
 
 def dbsession(dsn):
@@ -49,7 +52,7 @@ def get_user(request):
 
 
 class RootFactory(object):
-    __acl__ = [(Allow, Authenticated, ALL_PERMISSIONS), DENY_ALL]
+    __acl__ = [(Allow, Authenticated, 'view'), DENY_ALL]
 
     def __init__(self, request):
         pass
@@ -62,6 +65,7 @@ def main(global_config, **settings):
     config.add_request_method(get_user, 'user', reify=True)
     authen = RemoteUserAuthenticationPolicy('HTTP_REMOTE_USER')
     config.set_authentication_policy(authen)
+    config.set_default_permission('view')
     config.set_authorization_policy(ACLAuthorizationPolicy())
     config.set_root_factory(RootFactory)
     config.add_route('trackers', '/aws/trackers')

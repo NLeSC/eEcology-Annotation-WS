@@ -14,6 +14,7 @@ requires = [
     'waitress',
     'nose',
     'coverage',
+    'iso8601',
     ]
 
 setup(name='Annotation',
