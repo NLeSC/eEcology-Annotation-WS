@@ -20,3 +20,10 @@ Apache production config
 ------------------------
 
 Put WS and UI behind auth and follow instructions at https://services.e-ecology.sara.nl/redmine/projects/uvagps/wiki/Apache_authentication_against_DB .
+
+Required permissions for user
+-----------------------------
+
+1. The user should have `gps_limited` roles.
+2. The user should have access to one or more trackers.
+
