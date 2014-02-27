@@ -43,6 +43,7 @@ def _connect(request):
 
 @subscriber(NewRequest)
 def new_request(event):
+    """Make db connection available as request.db"""
     request = event.request
     request.set_property(_connect, 'db', reify=True)
 
@@ -59,8 +60,7 @@ class RootFactory(object):
 
 
 def main(global_config, **settings):
-    """ This function returns a Pyramid WSGI application.
-    """
+    """ This function returns a Pyramid WSGI application. """
     config = Configurator(settings=settings)
     config.add_request_method(get_user, 'user', reify=True)
     authen = RemoteUserAuthenticationPolicy('HTTP_REMOTE_USER')

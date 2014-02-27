@@ -23,6 +23,7 @@ logger = logging.getLogger(__package__)
 
 @view_config(route_name='trackers', renderer='json')
 def trackers(request):
+    """Returns a list of tracker identifiers the user has access to"""
     cur = request.db.cursor()
     return {'trackers': fetchTrackers(cur, request.user)}
 
@@ -116,6 +117,7 @@ def fetch(cur, username, trackerId, start, end):
 
 @view_config(route_name='tracker', renderer='json')
 def tracker(request):
+    """Returns gps+accel data of tracker in a certain time range"""
     cur = request.db.cursor()
     trackerId = int(request.matchdict['id'])
     start = parse_date(request.matchdict['start']).isoformat()
