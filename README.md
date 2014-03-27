@@ -27,4 +27,5 @@ Required permissions for user
 0. User needs a eEcology DB account.
 1. The user should have `gps_limited` roles.
 2. The user should have access to one or more trackers.
+3. Then it should work.
 
