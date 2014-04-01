@@ -16,7 +16,7 @@ import datetime
 import decimal
 import logging
 import psycopg2
-import simplejson as json
+import simplejson
 from psycopg2.extras import RealDictCursor
 from pyramid.authentication import RemoteUserAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
@@ -72,24 +72,6 @@ def cursor_adaptor(obj, request):
     # would like to use yield, but json lib doesnt do iterators so unroll cursor into list
     return list(obj)
 
-# The default json renderer is pure python try other implementations
-# Benchmarks with 760/2013-05-31T00:00:00Z/2013-08-09T00:00:00Z
-# json = 41s
-# simplejson = 26s
-# omnijson = ~ incorrect response no adaptor support
-# ujson = ~ incorrect response no adaptor support
-# yajl = ~ incorrect response no adaptor support
-# jsonlib2 = 58s
-# jsonlib =  61s
-# anyjson = ~ incorrect response no adaptor support
-# Conclusion use simplejson
-
-json_renderer = JSON(serializer=json.dumps)
-json_renderer.add_adapter(datetime.datetime, datetime_adaptor)
-json_renderer.add_adapter(datetime.timedelta, timedelta_adaptor)
-json_renderer.add_adapter(decimal.Decimal, decimal_adaptor)
-json_renderer.add_adapter(RealDictCursor, cursor_adaptor)
-
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application. """
     config = Configurator(settings=settings)
@@ -99,7 +81,25 @@ def main(global_config, **settings):
     config.set_default_permission('view')
     config.set_authorization_policy(ACLAuthorizationPolicy())
     config.set_root_factory(RootFactory)
+
+    # The default json renderer is pure python try other implementations
+    # Benchmarks with 760/2013-05-31T00:00:00Z/2013-08-09T00:00:00Z
+    # json = 41s
+    # simplejson = 26s
+    # omnijson = ~ incorrect response no adaptor support
+    # ujson = ~ incorrect response no adaptor support
+    # yajl = ~ incorrect response no adaptor support
+    # jsonlib2 = 58s
+    # jsonlib =  61s
+    # anyjson = ~ incorrect response no adaptor support
+    # Conclusion use simplejson
+    json_renderer = JSON(serializer=simplejson.dumps)
+    json_renderer.add_adapter(datetime.datetime, datetime_adaptor)
+    json_renderer.add_adapter(datetime.timedelta, timedelta_adaptor)
+    json_renderer.add_adapter(decimal.Decimal, decimal_adaptor)
+    json_renderer.add_adapter(RealDictCursor, cursor_adaptor)
     config.add_renderer('json', json_renderer)
+
     config.add_route('trackers', '/aws/trackers')
     config.add_route('tracker', '/aws/tracker/{id}/{start}/{end}')
     config.scan()

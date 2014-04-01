@@ -33,7 +33,7 @@ def fetchTrackers(cur, username):
         WHERE username=%s
         ORDER BY device_info_serial
     """, (username,))
-    return cur.fetchall()
+    return list(cur)
 
 def fetchTrack(cur, username, trackerId, start, end):
     # TODO accelartion freq is hardcoded
