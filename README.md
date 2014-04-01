@@ -21,6 +21,14 @@ Apache production config
 
 Put WS and UI behind auth and follow instructions at https://services.e-ecology.sara.nl/redmine/projects/uvagps/wiki/Apache_authentication_against_DB .
 
+Timeout
+~~~~~~~
+
+Configure apache to allow for longer request handling by addding to httpd config:
+
+    Timeout 300
+    ProxyTimeout 300
+
 Required permissions for user
 -----------------------------
 
