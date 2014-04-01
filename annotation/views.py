@@ -74,7 +74,7 @@ def fetchTrack(cur, username, trackerId, start, end):
     (
     SELECT
     device_info_serial, date_time
-    , a.index/%s time_acceleration
+    , round(a.index/%s, 4) time_acceleration
     , round(CAST ((x_acceleration-x_o)/x_s AS numeric), 4) x_acceleration
     , round(CAST ((y_acceleration-y_o)/y_s AS numeric), 4) y_acceleration
     , round(CAST ((z_acceleration-z_o)/z_s AS numeric), 4) z_acceleration
