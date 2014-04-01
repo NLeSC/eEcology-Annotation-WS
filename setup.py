@@ -7,14 +7,14 @@ README = open(os.path.join(here, 'README.md')).read()
 
 requires = [
     'pyramid',
-    'pyramid_debugtoolbar',
-    'waitress',
     'psycopg2',
     'mock',
     'waitress',
     'nose',
     'coverage',
     'iso8601',
+    'gunicorn',
+    'simplejson',
     ]
 
 setup(name='Annotation',
