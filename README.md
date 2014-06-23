@@ -37,3 +37,11 @@ Required permissions for user
 2. The user should have access to one or more trackers.
 3. Then it should work.
 
+Api documentation
+-----------------
+
+The api documentation can be found in [apiary.apib](apiary.apib).
+Generate html version of api with
+
+    npm install aglio
+    aglio -i apiary.apib -o api.html
