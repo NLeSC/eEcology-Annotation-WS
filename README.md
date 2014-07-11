@@ -3,6 +3,14 @@ eEcology-Annotation-WS
 
 Webservice for eEcology Annotation project.
 
+Start development server
+-------------------------
+
+    cp development.ini-dist development.ini
+    # adjust database settings
+    . env/bin/activate
+    pserve development.ini
+
 NGINX develop config
 --------------------
 

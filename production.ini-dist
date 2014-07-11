@@ -11,6 +11,7 @@ pyramid.debug_authorization = false
 pyramid.debug_notfound = false
 pyramid.debug_routematch = false
 pyramid.default_locale_name = en
+mako.directories = annotation:templates
 
 dsn = host=localhost dbname=test user=postgres password=secret sslmode=require
 

@@ -100,7 +100,11 @@ def main(global_config, **settings):
     json_renderer.add_adapter(RealDictCursor, cursor_adaptor)
     config.add_renderer('json', json_renderer)
 
+    config.add_static_view('aws/static', 'annotation:static')
     config.add_route('trackers', '/aws/trackers')
     config.add_route('tracker', '/aws/tracker/{id}/{start}/{end}')
+    config.add_route('uploads.html', '/aws/uploads/{table}.html')
+    config.add_route('uploads.json', '/aws/uploads/{table}.json')
+    config.add_route('annotations.csv', '/aws/uploads/{table}/annotations.csv')
     config.scan()
     return config.make_wsgi_app()
