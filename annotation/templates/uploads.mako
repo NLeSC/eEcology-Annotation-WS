@@ -1,4 +1,4 @@
-<% appbase = request.static_path('annotation:static/eEcology-Annotation-UI/build/testing/TrackAnnot/') %>
+<% appbase = request.static_path('annotation:static/TrackAnnot/') %>
 <!DOCTYPE HTML>
 <html>
 <head>
