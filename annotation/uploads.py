@@ -28,13 +28,13 @@ class Upload(object):
         (
           device_info_serial integer NOT NULL,
           date_time timestamp without time zone NOT NULL,
-          index_offset integer NOT NULL,
+          first_index integer NOT NULL,
           class_id integer,
           class_name character varying(255),
           class_red double precision,
           class_green double precision,
           class_blue double precision,
-          CONSTRAINT annotation_538_movement_pkey PRIMARY KEY (device_info_serial, date_time, index_offset)
+          CONSTRAINT annotation_538_movement_pkey PRIMARY KEY (device_info_serial, date_time, first_index)
         );
     """
 
