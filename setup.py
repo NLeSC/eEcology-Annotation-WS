@@ -15,6 +15,7 @@ requires = [
     'iso8601',
     'gunicorn',
     'simplejson',
+    'pyramid_mako',
     ]
 
 setup(name='Annotation',
