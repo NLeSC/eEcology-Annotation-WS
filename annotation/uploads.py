@@ -41,7 +41,8 @@ class Upload(object):
     def __init__(self, request):
         self.request = request
         self.db = request.db
-        self.table = request.matchdict['table']
+        self.table = request.matchdict.get('table', '')
+        self.tracker_id = request.matchdict.get('tracker', 0)
 
     def fetch_classifications(self):
         cursor = self.db.cursor()
@@ -55,26 +56,41 @@ class Upload(object):
         sql_template = 'SELECT device_info_serial AS id, MIN(date_time) AS start, MAX(date_time) AS end FROM {table} GROUP BY device_info_serial ORDER BY device_info_serial'
         sql = sql_template.format(table=self.table)
         cursor.execute(sql)
-        return cursor.fetchall()
+        trackers = cursor.fetchall()
+        for tracker in trackers:
+            tracker['annotations'] = self.request.route_path('annotations.csv', table=self.table, tracker=tracker['id'])
+        return trackers
 
-    @view_config(route_name='uploads.json', renderer='json')
-    @view_config(route_name='uploads.html', renderer='uploads.mako')
-    def uploads_json(self):
+    @view_config(route_name='uploads.html', renderer='index.mako')
+    def index(self):
+        table = self.request.params.get('table', '')
+        if table == '':
+            return {'trackers': [], 'table': ''}
+        else:
+            self.table = table
+
+        trackers = self.fetch_trackers()
+        return {'trackers': trackers, 'table': self.table}
+
+    @view_config(route_name='upload.html', renderer='uploads.mako')
+    def upload_html(self):
+        return {'tracker_id': self.tracker_id, 'table': self.table}
+
+    @view_config(route_name='meta.json', renderer='json')
+    def meta_json(self):
         classifications = self.fetch_classifications()
         trackers = self.fetch_trackers()
-        for tracker in trackers:
-            tracker['annotations'] = self.request.route_path('annotations.csv', table=self.table)
         return {'classifications': classifications, 'trackers': trackers}
 
     @view_config(route_name='annotations.csv')
     def annotations(self):
         cursor = self.db.cursor()
-        sql_template = 'SELECT device_info_serial AS id, date_time AS ts, class_id AS class FROM {table} ORDER BY device_info_serial, date_time'
+        sql_template = 'SELECT device_info_serial AS id, date_time AS ts, class_id AS class FROM {table} WHERE device_info_serial=%(tracker)s ORDER BY device_info_serial, date_time'
         sql = sql_template.format(table=self.table)
-        cursor.execute(sql)
+        cursor.execute(sql, {'tracker': self.tracker_id})
         annotations = ['id,ts,class']
         for a in cursor.fetchall():
-            annotations.append(str(a['id']) + ',' + str(a['ts']) + ',' + str(a['class']))
+            annotations.append(str(a['id']) + ',' + a['ts'].isoformat() + 'Z,' + str(a['class']))
         return Response("\n".join(annotations), content_type="text/csv")
 
 

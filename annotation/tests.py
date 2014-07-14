@@ -21,6 +21,7 @@ from mock import Mock, ANY
 from pyramid import testing
 import annotation.views as views
 import annotation
+from annotation.uploads import Upload
 
 class ViewTests(unittest.TestCase):
     def setUp(self):
@@ -86,3 +87,39 @@ class AnnotationTests(unittest.TestCase):
     def test_cursor_adaptor(self):
         obj = (1, 2, 3)
         self.assertEquals(annotation.cursor_adaptor(obj, self.request), [1, 2, 3])
+
+class UploadsTest(unittest.TestCase):
+    def setUp(self):
+        self.config = testing.setUp()
+        self.request = testing.DummyRequest()
+        self.request.db = Mock()
+
+    def tearDown(self):
+        testing.tearDown()
+
+    def test_constructor_nourlparameters_trackerIsEmpty(self):
+        upload = Upload(self.request)
+
+        self.assertEquals(upload.tracker_id, 0)
+
+    def test_constructor_nourlparameters_tableIsEmpty(self):
+        upload = Upload(self.request)
+
+        self.assertEquals(upload.table, '')
+
+    def test_constructor_url_parameters_trackerAndTableFilled(self):
+        self.request.matchdict['table'] = 'mytable'
+        self.request.matchdict['tracker'] = 1234
+
+        upload = Upload(self.request)
+
+        self.assertEquals(upload.table, 'mytable')
+        self.assertEquals(upload.tracker_id, 1234)
+
+    def test_upload_html(self):
+        upload = Upload(self.request)
+
+        response = upload.upload_html()
+
+        expected_response = {'tracker_id': 0, 'table': ''}
+        self.assertEqual(response, expected_response)

@@ -1,6 +1,7 @@
 function loadTrackerAndAnnotation(tableName, trackerId) {
 
-    var url = '/aws/uploads/' + tableName + '.json';
+    var url = '/aws/uploads/' + tableName + '/meta.json';
+    ctrl.getTrackerId().getStore().getProxy().url = url;
     Ext.Ajax.request({
         url: url,
         success: function(response) {
@@ -22,6 +23,7 @@ function loadTrackerAndAnnotation(tableName, trackerId) {
                  });
 
              }, this, {single: true});
+
              ctrl.loadTrack(button);
         }
     });
