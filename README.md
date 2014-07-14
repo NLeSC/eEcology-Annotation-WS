@@ -29,6 +29,11 @@ Apache production config
 
 Put WS and UI behind auth and follow instructions at https://services.e-ecology.sara.nl/redmine/projects/uvagps/wiki/Apache_authentication_against_DB .
 
+Deploy ui
+---------
+
+The eEcology-Annotation-UI project should be build and deployed as annotation/static/TrackAnnot
+
 Timeout
 ~~~~~~~
 

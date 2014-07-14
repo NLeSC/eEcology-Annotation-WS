@@ -19,6 +19,10 @@ from pyramid.view import view_config
 
 logger = logging.getLogger(__package__)
 
+@view_config(route_name="home", renderer="home.mako")
+def home(request):
+    return {}
+
 @view_config(route_name='trackers', renderer='json')
 def trackers(request):
     """Returns a list of tracker identifiers the user has access to"""

@@ -36,3 +36,6 @@ cover
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Should be copied over
+annotation/static/TrackAnnot

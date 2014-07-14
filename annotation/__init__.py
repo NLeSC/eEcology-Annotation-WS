@@ -101,6 +101,7 @@ def main(global_config, **settings):
     config.add_renderer('json', json_renderer)
 
     config.add_static_view('aws/static', 'annotation:static')
+    config.add_route('home', '/aws')
     config.add_route('trackers', '/aws/trackers')
     config.add_route('tracker', '/aws/tracker/{id}/{start}/{end}')
     config.add_route('uploads.html', '/aws/uploads.html')

@@ -61,7 +61,7 @@ class Upload(object):
             tracker['annotations'] = self.request.route_path('annotations.csv', table=self.table, tracker=tracker['id'])
         return trackers
 
-    @view_config(route_name='uploads.html', renderer='index.mako')
+    @view_config(route_name='uploads.html', renderer='uploads.mako')
     def index(self):
         table = self.request.params.get('table', '')
         if table == '':
@@ -72,7 +72,7 @@ class Upload(object):
         trackers = self.fetch_trackers()
         return {'trackers': trackers, 'table': self.table}
 
-    @view_config(route_name='upload.html', renderer='uploads.mako')
+    @view_config(route_name='upload.html', renderer='upload.mako')
     def upload_html(self):
         return {'tracker_id': self.tracker_id, 'table': self.table}
 

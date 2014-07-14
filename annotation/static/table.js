@@ -1,12 +1,14 @@
 function loadTrackerAndAnnotation(tableName, trackerId) {
 
     var url = '/aws/uploads/' + tableName + '/meta.json';
+    var ctrl = TrackAnnot.getApplication().getController('Main');
     ctrl.getTrackerId().getStore().getProxy().url = url;
+
     Ext.Ajax.request({
         url: url,
         success: function(response) {
              data = Ext.decode(response.responseText);
-             var ctrl = TrackAnnot.getApplication().getController('Main');
+
              ctrl.getClassificationsStore().loadRawData(data.classifications);
              var tracker = data.trackers[0];
              ctrl.getTrackerId().setValue(tracker.id);
