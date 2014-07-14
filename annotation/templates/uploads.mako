@@ -5,6 +5,7 @@
 <title>Annotation - table selector</title>
 </head>
 <body>
+Uploaded annotations in <a href="https://services.e-ecology.sara.nl/cgi-bin/flysafe/uva_admin/upload_csv.cgi">GPS Annotation service</a> should use the '<b>acceleration classification</b>' template.
 <form method="POST">
 <label for="table">Table (schema.table):</label>
 <input name="table" size="60" value="${table}">
