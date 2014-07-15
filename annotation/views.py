@@ -57,6 +57,7 @@ def fetchTrack(cur, username, trackerId, start, end):
     round(s.speed::numeric, 5) AS speed,
     --s.speed3d,
     round(s.direction, 2) AS direction
+    ,round(mod(s.direction - lag(s.direction) over (order by device_info_serial, date_time), 180.0), 2) AS delta_direction
     ,round((
       ST_Length_Spheroid(ST_MakeLine(location, lag(location) over (order by device_info_serial, date_time)), 'SPHEROID["WGS 84",6378137,298.257223563]')
       /
