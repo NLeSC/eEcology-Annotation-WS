@@ -49,6 +49,8 @@ def fetchTrack(cur, username, trackerId, start, end):
     round(s.latitude::numeric, 5) lat,
     round(s.longitude::numeric, 5) lon,
     s.altitude,
+    s.altitude altitude_asl,
+    elevation.srtm_getvalue(s.location) AS ground_elevation,
     --s.pressure,
     s.temperature,
     --s.gps_fixtime, s.positiondop,
