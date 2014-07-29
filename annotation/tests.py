@@ -32,7 +32,6 @@ class ViewTests(unittest.TestCase):
 
     def test_trackers(self):
         request = testing.DummyRequest()
-        request.user = 'me'
         cursor = UserList([{'id': 355}])
         cursor.execute = Mock()
         request.db = Mock()
@@ -43,17 +42,14 @@ class ViewTests(unittest.TestCase):
         expected = {'trackers': [{'id': 355}]}
         self.assertEquals(response, expected)
         expected_sql = """
-        SELECT device_info_serial as id
-        FROM gps.uva_device
-        JOIN gps.uva_access_device USING (device_info_serial)
-        WHERE username=%s
+        SELECT DISTINCT device_info_serial as id
+        FROM gps.ee_tracker_limited
         ORDER BY device_info_serial
     """
-        cursor.execute.assert_called_with(expected_sql, ('me',))
+        cursor.execute.assert_called_with(expected_sql)
 
     def test_tracker(self):
         request = testing.DummyRequest()
-        request.user = 'me'
         request.db = Mock()
         cursor = Mock()
         request.db.cursor.return_value = cursor
@@ -61,7 +57,7 @@ class ViewTests(unittest.TestCase):
 
         views.tracker(request)
 
-        binds = (20.0, 355, '2010-06-28T00:00:00+00:00', '2010-06-29T00:00:00+00:00', 355, '2010-06-28T00:00:00+00:00', '2010-06-29T00:00:00+00:00', 'me')
+        binds = (20.0, 355, '2010-06-28T00:00:00+00:00', '2010-06-29T00:00:00+00:00', 355, '2010-06-28T00:00:00+00:00', '2010-06-29T00:00:00+00:00')
         cursor.execute.assert_called_with(ANY, binds)
 
 class AnnotationTests(unittest.TestCase):

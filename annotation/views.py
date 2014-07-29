@@ -19,27 +19,29 @@ from pyramid.view import view_config
 
 logger = logging.getLogger(__package__)
 
+
 @view_config(route_name="home", renderer="home.mako")
 def home(request):
     return {}
+
 
 @view_config(route_name='trackers', renderer='json')
 def trackers(request):
     """Returns a list of tracker identifiers the user has access to"""
     cur = request.db.cursor()
-    return {'trackers': fetchTrackers(cur, request.user)}
+    return {'trackers': fetchTrackers(cur)}
 
-def fetchTrackers(cur, username):
+
+def fetchTrackers(cur):
     cur.execute("""
-        SELECT device_info_serial as id
-        FROM gps.uva_device
-        JOIN gps.uva_access_device USING (device_info_serial)
-        WHERE username=%s
+        SELECT DISTINCT device_info_serial as id
+        FROM gps.ee_tracker_limited
         ORDER BY device_info_serial
-    """, (username,))
+    """)
     return list(cur)
 
-def fetchTrack(cur, username, trackerId, start, end):
+
+def fetchTrack(cur, trackerId, start, end):
     # TODO accelartion freq is hardcoded
     freq = 20.0
 
@@ -69,7 +71,7 @@ def fetchTrack(cur, username, trackerId, start, end):
     ,aa.x_acceleration, aa.y_acceleration , aa.z_acceleration
     ,aa.time_acceleration
     FROM
-    gps.uva_tracking_speed s
+    gps.ee_tracking_speed_limited s
     LEFT JOIN
     (
     SELECT date_time
@@ -85,8 +87,11 @@ def fetchTrack(cur, username, trackerId, start, end):
     , round(CAST ((x_acceleration-x_o)/x_s AS numeric), 4) x_acceleration
     , round(CAST ((y_acceleration-y_o)/y_s AS numeric), 4) y_acceleration
     , round(CAST ((z_acceleration-z_o)/z_s AS numeric), 4) z_acceleration
-    FROM gps.uva_acceleration101 a
-    JOIN gps.uva_device d USING (device_info_serial)
+    FROM gps.ee_acceleration_limited a
+    JOIN (
+      SELECT DISTINCT device_info_serial, x_o,x_s,y_o,y_s,z_o,z_s
+      FROM gps.ee_tracker_limited d
+    ) tu USING (device_info_serial)
     WHERE
     device_info_serial = %s AND date_time BETWEEN %s AND %s
     -- order in sub-select so array_agg is ordered
@@ -94,15 +99,14 @@ def fetchTrack(cur, username, trackerId, start, end):
     ) a
     GROUP BY date_time
     ) aa USING (date_time)
-    JOIN gps.uva_access_device USING (device_info_serial)
     WHERE
     device_info_serial = %s AND date_time BETWEEN %s AND %s
     AND userflag != 1 AND longitude IS NOT NULL
-    AND username=%s
     """
 
-    cur.execute(sql2, (freq, trackerId, start, end, trackerId, start, end, username))
+    cur.execute(sql2, (freq, trackerId, start, end, trackerId, start, end))
     return cur
+
 
 @view_config(route_name='tracker', renderer='json')
 def tracker(request):
@@ -111,4 +115,4 @@ def tracker(request):
     trackerId = int(request.matchdict['id'])
     start = parse_date(request.matchdict['start']).isoformat()
     end = parse_date(request.matchdict['end']).isoformat()
-    return fetchTrack(cur, request.user, trackerId, start, end)
+    return fetchTrack(cur, trackerId, start, end)
