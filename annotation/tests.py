@@ -23,6 +23,9 @@ import annotation.views as views
 import annotation
 from annotation.uploads import Upload
 
+class ConnectTests(unittest.TestCase):
+    pass
+
 class ViewTests(unittest.TestCase):
     def setUp(self):
         self.config = testing.setUp()

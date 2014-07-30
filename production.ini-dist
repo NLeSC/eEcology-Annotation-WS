@@ -14,7 +14,7 @@ pyramid.default_locale_name = en
 pyramid.includes = pyramid_mako
 mako.directories = annotation:templates
 
-dsn = host=localhost dbname=test user=postgres password=secret sslmode=require
+dsn = host=db.e-ecology.sara.nl dbname=eecology user={username} password={password} sslmode=require
 
 ###
 # wsgi server configuration

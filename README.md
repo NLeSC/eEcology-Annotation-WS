@@ -20,9 +20,13 @@ Using a hardcoded user.
                 gzip on;
                 gzip_types application/json;
                 gzip_proxied any;
-                proxy_set_header REMOTE_USER <user with tracker rights>;
+                auth_basic "Restricted";
+                auth_basic_user_file aws.users;
+                proxy_set_header REMOTE_USER $remote_user;
                 proxy_pass http://127.0.0.1:6565;
         }
+
+The `aws.users` contains user/password combi created with htpasswd.
 
 Apache production config
 ------------------------

@@ -33,10 +33,26 @@ logger = logging.getLogger(__package__)
 def dbsession(dsn):
     return psycopg2.connect(dsn, cursor_factory=RealDictCursor)
 
+def request_credentials(request):
+    """Returns the username/password from the authorization header with Basic Authentication.
+
+    When authorization header is missing it returns (None, None) tuple.
+    """
+    if 'HTTP_AUTHORIZATION' not in request.environ:
+        logger.warn('No HTTP_AUTHORIZATION found, using empty credentials')
+        return (None, None)
+    (method, auth) = request.environ['HTTP_AUTHORIZATION'].split(' ', 1)
+    if method.lower() != 'basic':
+        err = 'Can only request credentials from Basic Authentication'
+        raise NotImplementedError(err)
+    (username, password) = auth.strip().decode('base64').split(':', 1)
+    return (username, password)
 
 def _connect(request):
     settings = request.registry.settings
-    conn = dbsession(settings['dsn'])
+    (username, password) = request_credentials(request)
+    dsn = settings['dsn'].format(username=username, password=password)
+    conn = dbsession(dsn)
 
     def cleanup(_):
         conn.close()
@@ -61,6 +77,7 @@ class RootFactory(object):
 
     def __init__(self, request):
         pass
+
 
 def datetime_adaptor(obj, request):
     return obj.isoformat()

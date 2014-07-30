@@ -19,7 +19,7 @@ mako.directories = annotation:templates
 # '127.0.0.1' and '::1'.
 # debugtoolbar.hosts = 127.0.0.1 ::1
 
-dsn = host=localhost dbname=test user=postgres password=secret sslmode=require
+dsn = host=db.e-ecology.sara.nl dbname=eecology user={username} password={password} sslmode=require
 
 ###
 # wsgi server configuration
