@@ -52,7 +52,22 @@ def fetchTrack(cur, trackerId, start, end):
     , round(s.longitude::numeric, 5) lon
     , s.altitude
     , s.altitude altitude_asl
-    , elevation.srtm_getvalue(s.location) AS ground_elevation
+    , coalesce(nullif(
+            (
+            SELECT max(the_data[floor(((st_ymax(bbox) - (st_y(location)))    / abs(cellsize_y))+1)]
+                     [floor(((st_x(location)- st_xmin(bbox)) / abs(cellsize_x))+1)])::float
+            FROM elevation.srtm3
+            WHERE bbox && location
+            )
+        , -9999
+        )
+        , (
+        SELECT max(the_data[floor(((st_ymax(bbox) - (st_y(location)))    / abs(cellsize_y))+1)]
+                 [floor(((st_x(location)- st_xmin(bbox)) / abs(cellsize_x))+1)])::float
+        FROM elevation.srtm30
+        WHERE bbox && location
+        )
+    ) AS ground_elevation
     , s.temperature
     , round(s.speed::numeric, 5) AS speed
     ,round((
