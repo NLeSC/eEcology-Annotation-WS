@@ -15,12 +15,19 @@ function loadTrackerAndAnnotation(tableName, trackerId) {
              ctrl.setTrackRange(tracker.start, tracker.end);
              var button = Ext.ComponentQuery.query('button[action=loadTrack]')[0];
              ctrl.trackStore.on('load', function(store, data, isLoaded) {
+            	 var annotationgrid = Ext.ComponentQuery.query('annotations')[0];
+            	 annotationgrid.setLoading(true);
                  Ext.Ajax.request({
                     url: tracker.annotations,
                     success: function(aresponse) {
                         var astore = ctrl.getAnnotationsStore();
                         astore.removeAll();
                         astore.importText(aresponse.responseText, ctrl.trackStore);
+                        annotationgrid.setLoading(false);
+                    },
+                    failure: function() {
+                        annotationgrid.setLoading(false);
+                    	Ext.Msg.alert('Failure', 'Failed to load annotations');
                     }
                  });
 
