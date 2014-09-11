@@ -20,6 +20,7 @@ from pyramid.response import Response
 
 logger = logging.getLogger(__package__)
 
+
 class Upload(object):
     """
     Serves annotations from a table with following structure::
@@ -92,5 +93,3 @@ class Upload(object):
         for a in cursor.fetchall():
             annotations.append(str(a['id']) + ',' + a['ts'].isoformat() + 'Z,' + str(a['class']))
         return Response("\n".join(annotations), content_type="text/csv")
-
-

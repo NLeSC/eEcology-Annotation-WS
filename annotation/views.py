@@ -36,6 +36,7 @@ def fetchTrackers(cur):
     cur.execute("""
         SELECT DISTINCT device_info_serial as id
         FROM gps.ee_tracker_limited
+        JOIN gps.ee_track_session_limited USING (device_info_serial)
         ORDER BY device_info_serial
     """)
     return list(cur)
@@ -79,7 +80,7 @@ def fetchTrack(cur, trackerId, start, end):
     , round(degrees(ST_Azimuth(lag(location) over (order by device_info_serial, date_time), location))::numeric, 2) tdirection
     , round(mod(s.direction - lag(s.direction) over (order by device_info_serial, date_time), 180.0), 2) AS delta_idirection
     , round(degrees(
-        ST_Azimuth(location, lead(location) over (order by device_info_serial, date_time)) - 
+        ST_Azimuth(location, lead(location) over (order by device_info_serial, date_time)) -
         ST_Azimuth(lag(location) over (order by device_info_serial, date_time), location)
     )::numeric %% 180.0, 2) AS delta_tdirection
     , aa.time_acceleration
@@ -95,15 +96,15 @@ def fetchTrack(cur, trackerId, start, end):
     , array_agg(round(((z_acceleration-z_o)/z_s)::numeric, 4) ORDER BY date_time, index) z_acceleration
     FROM gps.ee_acceleration_limited a
     JOIN (
-      SELECT 
-    DISTINCT device_info_serial 
-    , x_o, x_s 
-    , y_o, y_s 
+      SELECT
+    DISTINCT device_info_serial
+    , x_o, x_s
+    , y_o, y_s
     , z_o, z_s
       FROM gps.ee_tracker_limited d
     ) tu USING (device_info_serial)
     WHERE
-    device_info_serial = %s AND date_time BETWEEN %s AND %s 
+    device_info_serial = %s AND date_time BETWEEN %s AND %s
     GROUP BY date_time
     ) aa USING (date_time)
     WHERE
