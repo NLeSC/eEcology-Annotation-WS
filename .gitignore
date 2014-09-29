@@ -37,5 +37,3 @@ cover
 .project
 .pydevproject
 
-# Should be copied over
-annotation/static/TrackAnnot

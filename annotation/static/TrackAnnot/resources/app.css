@@ -1,0 +1,208 @@
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.focus {
+  fill: none;
+  stroke: red;
+  stroke-width: 2px;
+  shape-rendering: crispEdges;
+}
+
+.scrubber {
+  fill: darkred;
+  stroke: red;
+  cursor: pointer;
+  stroke-width: 2px;
+  shape-rendering: crispEdges;
+}
+
+.scrubber:hover {
+    fill: red;
+    stroke: darkred;
+}
+
+.scrubber_container {
+    cursor: pointer;
+    opacity: 0;
+}
+
+svg {
+  background: white;
+  font: 10px sans-serif;
+}
+
+path {
+  fill: steelblue;
+}
+
+path.ground {
+	fill: skyblue;
+	fill-opacity: 0.4;
+}
+
+.annotation rect {
+  cursor: move;
+  shape-rendering: crispEdges;
+}
+
+.annotations {
+	fill: lightgray;
+}
+
+.resize rect {
+  fill: darkgrey;
+  fill-opacity: 0.0;
+  cursor: ew-resize;
+  shape-rendering: crispEdges;
+}
+
+.resize rect:hover {
+  fill-opacity: 1.0;
+}
+
+.brush .extent {
+  stroke: #fff;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+
+rect.pane {
+  fill: none;
+}
+
+.play {
+  background-image: url(famfamfam_silk_icons/icons/control_play.png) !important;
+}
+
+.pause {
+  background-image: url(famfamfam_silk_icons/icons/control_pause.png) !important;
+}
+
+.rewind {
+  background-image: url(famfamfam_silk_icons/icons/control_rewind.png) !important;
+}
+
+.icon-zoom-in {
+  background-image: url(famfamfam_silk_icons/icons/zoom_in.png) !important;
+}
+
+.icon-zoom-out {
+  background-image: url(famfamfam_silk_icons/icons/zoom_out.png) !important;
+}
+
+.icon-load-tracker {
+  background-image: url(famfamfam_silk_icons/icons/database_go.png) !important;
+}
+
+.icon-delete {
+  background-image: url(famfamfam_silk_icons/icons/delete.png) !important;
+}
+
+.icon-start2current {
+  background-image: url(famfamfam_silk_icons/icons/resultset_first.png) !important;
+}
+
+.icon-end2current {
+  background-image: url(famfamfam_silk_icons/icons/resultset_last.png) !important;
+}
+
+.icon-center2current {
+  background-image: url(famfamfam_silk_icons/icons/shape_align_center.png);
+}
+
+video {
+    background: black;
+}
+
+rect.frame {
+  fill-opacity: 0.0;
+  stroke: #ccc;
+  cursor: pointer; 
+}
+
+rect.current {
+    stroke: red;
+}
+
+path.x {
+  stroke: red;
+  stroke-width: 1.5px;
+  fill: none;
+}
+
+path.y {
+  stroke: steelblue;
+  stroke-width: 1.5px;
+  fill: none;
+}
+
+path.z {
+  stroke: green;
+  stroke-width: 1.5px;
+  fill: none;
+}
+
+.iline span{
+  color: steelblue;
+}
+
+path.iline {
+  stroke: steelblue;
+  stroke-width: 1.5px;
+  fill: none;
+}
+
+.tline span {
+  color: chocolate;
+}
+
+path.tline {
+  stroke: chocolate;
+  stroke-width: 1.5px;
+  fill: none;
+}
+
+circle.x {
+  fill: red;
+}
+
+circle.y {
+  fill: steelblue;
+}
+
+circle.z {
+  fill: green;
+}
+
+.accx span {
+	color: red;
+}
+
+.accy span {
+	color: steelblue;
+}
+
+.accz span {
+	color: green;
+}
+
+
+path.timepoint {
+   stroke: #bbb;
+   stroke-width: 1px;
+   fill: none;
+}
+
+path.noaccel {
+    stroke-dasharray: 5,5;
+}
