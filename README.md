@@ -33,13 +33,18 @@ Apache production config
 
 Put WS and UI behind auth and follow instructions at https://services.e-ecology.sara.nl/redmine/projects/uvagps/wiki/Apache_authentication_against_DB .
 
-Deploy ui
----------
+User interface
+--------------
 
-The eEcology-Annotation-UI project should be build and deployed as annotation/static/TrackAnnot
+The web user interface is in the `annotation/static/TrackAnnot` folder.
+That folder has compiled/minimized javascript, the source/un-minimized version can be found in the  https://github.com/NLeSC/eEcology-Annotation-UI repository.
 
-Timeout
-~~~~~~~
+The user interface was build using a commercial licens of ExtJS.
+
+Timeouts
+--------
+
+The fetch track data from the database can take a while to do. The webserver can timeout, causing the fetching to stopped prematurely.
 
 Configure apache to allow for longer request handling by addding to httpd config:
 
