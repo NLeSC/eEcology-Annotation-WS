@@ -39,8 +39,6 @@ User interface
 The web user interface is in the `annotation/static/TrackAnnot` folder.
 That folder has compiled/minimized javascript, the source/un-minimized version can be found in the  https://github.com/NLeSC/eEcology-Annotation-UI repository.
 
-The user interface was build using a commercial licens of ExtJS.
-
 Timeouts
 --------
 
@@ -67,3 +65,14 @@ Generate html version of api with
 
     npm install aglio
     aglio -i apiary.apib -o api.html
+
+Copyrights & Disclaimers
+------------------------
+
+eEcology script wrapper is copyrighted by the Netherlands eScience Center and releases under
+the Apache License, Version 2.0.
+
+See <http://www.esciencecenter.nl> for more information on the Netherlands
+eScience Center.
+
+See the "LICENSE" and "NOTICE" files for more information.
