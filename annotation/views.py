@@ -14,7 +14,6 @@
 
 import logging
 from iso8601 import parse_date
-from iso8601.iso8601 import UTC
 from pyramid.view import view_config
 
 logger = logging.getLogger(__package__)
@@ -70,7 +69,7 @@ def fetchTrack(cur, trackerId, start, end):
         )
     ) AS ground_elevation
     , s.temperature
-    , round(s.speed::numeric, 5) AS speed
+    , round(s.speed_2d::numeric, 5) AS speed
     ,round((
       ST_Length_Spheroid(ST_MakeLine(location, lag(location) over (order by device_info_serial, date_time)), 'SPHEROID["WGS 84",6378137,298.257223563]')
       /
