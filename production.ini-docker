@@ -1,0 +1,64 @@
+###
+# app configuration
+# http://docs.pylonsproject.org/projects/pyramid/en/latest/narr/environment.html
+###
+
+[app:main]
+use = egg:Annotation
+
+pyramid.reload_templates = false
+pyramid.debug_authorization = false
+pyramid.debug_notfound = false
+pyramid.debug_routematch = false
+pyramid.default_locale_name = en
+pyramid.includes = pyramid_mako
+mako.directories = annotation:templates
+
+dsn = host={host} dbname=eecology user={username} password={password} sslmode=require
+
+###
+# wsgi server configuration
+###
+
+[server:main]
+use = egg:gunicorn#main
+host = 0.0.0.0
+port = 6565
+workers = 4
+timeout = 300
+pidfile = annotation.pid
+accesslog = access.log
+# errors to stderr
+errorlog = -
+
+###
+# logging configuration
+# http://docs.pylonsproject.org/projects/pyramid/en/latest/narr/logging.html
+###
+
+[loggers]
+keys = root, annotation
+
+[handlers]
+keys = console
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = WARN
+handlers = console
+
+[logger_annotation]
+level = WARN
+handlers =
+qualname = annotation
+
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(asctime)s %(levelname)-5.5s [%(name)s][%(threadName)s] %(message)s

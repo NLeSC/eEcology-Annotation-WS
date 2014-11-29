@@ -32,6 +32,7 @@ Apache production config
 ------------------------
 
 Put WS and UI behind auth and follow instructions at https://services.e-ecology.sara.nl/redmine/projects/uvagps/wiki/Apache_authentication_against_DB .
+The application needs the `REMOTE_USER` and `HTTP_AUTHORIZATION` environment variables so it can use those credentials to connect to the database.
 
 User interface
 --------------
@@ -65,6 +66,28 @@ Generate html version of api with
 
     npm install aglio
     aglio -i apiary.apib -o api.html
+
+Docker build
+------------
+
+### Construct image
+
+1. Install User interface in `annotation/static/TrackAnnot` folder. 
+1.1. Optionallly make TrackAnnot smaller by stripping unneeded folders from Cesium library, only Build/Cesium is needed.
+2. `sudo docker build -t sverhoeven/annotation:1.0.0-db3 .`
+3. Export or push to registry
+
+### Run container
+
+1. Import or pull from registry
+2. `sudo docker run -p 6565:6565 -d --name annotation sverhoeven/annotation:1.0.0-db3`
+
+Error log is available with `sudo docker logs annotation`.
+Access log can be read using `sudo docker exec annotation /bin/less /usr/src/app/access.log`.
+
+Database host can be overwritten with `DB_HOST` environment variable for example with 
+`sudo docker run -p 6565:6565 -d --env DB_HOST=db-dev.e-ecology.sara.nl --name annotation sverhoeven/annotation:1.0.0-db3
+
 
 Copyrights & Disclaimers
 ------------------------
