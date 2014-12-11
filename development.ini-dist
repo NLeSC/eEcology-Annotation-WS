@@ -28,7 +28,7 @@ dsn = host=db.e-ecology.sara.nl dbname=eecology user={username} password={passwo
 [server:main]
 use = egg:waitress#main
 host = 0.0.0.0
-port = 6543
+port = 6565
 
 ###
 # logging configuration

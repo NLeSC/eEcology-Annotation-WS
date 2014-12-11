@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import datetime
 import decimal
 import logging
@@ -26,6 +27,7 @@ from pyramid.events import subscriber
 from pyramid.security import Allow, Authenticated, ALL_PERMISSIONS, DENY_ALL
 from pyramid.security import unauthenticated_userid
 from pyramid.renderers import JSON
+from .version import __version__
 
 logger = logging.getLogger(__package__)
 
@@ -51,7 +53,7 @@ def request_credentials(request):
 def _connect(request):
     settings = request.registry.settings
     (username, password) = request_credentials(request)
-    dsn = settings['dsn'].format(username=username, password=password)
+    dsn = settings['dsn'].format(username=username, password=password, host=os.environ.get('DB_HOST', ''))
     conn = dbsession(dsn)
 
     def cleanup(_):
