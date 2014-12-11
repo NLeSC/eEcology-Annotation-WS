@@ -35,6 +35,11 @@ class ViewTests(unittest.TestCase):
     def tearDown(self):
         testing.tearDown()
 
+    def test_home(self):
+        request = testing.DummyRequest()
+        response = views.home(request)
+        self.assertEqual(response, {})
+
     def test_trackers(self):
         request = testing.DummyRequest()
         cursor = UserList([{'id': 355}])

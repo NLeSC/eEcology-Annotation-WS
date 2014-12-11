@@ -72,7 +72,7 @@ Docker build
 
 ### Construct image
 
-1. Install User interface in `annotation/static/TrackAnnot` folder. 
+1. Install User interface in `annotation/static/TrackAnnot` folder.
 1.1. Optionallly make TrackAnnot smaller by stripping unneeded folders from Cesium library, only Build/Cesium is needed.
 2. `sudo docker build -t sverhoeven/annotation:1.0.0-db3 .`
 3. Export or push to registry
@@ -80,14 +80,12 @@ Docker build
 ### Run container
 
 1. Import or pull from registry
-2. `sudo docker run -p 6565:6565 -d --name annotation sverhoeven/annotation:1.0.0-db3`
+2. `sudo docker run -p 6565:6565 --env DB_HOST=db.e-ecology.sara.nl -d --name annotation sverhoeven/annotation:1.0.0-db3`
 
 Error log is available with `sudo docker logs annotation`.
 Access log can be read using `sudo docker exec annotation /bin/less /usr/src/app/access.log`.
 
-Database host can be overwritten with `DB_HOST` environment variable for example with 
-`sudo docker run -p 6565:6565 -d --env DB_HOST=db-dev.e-ecology.sara.nl --name annotation sverhoeven/annotation:1.0.0-db3
-
+Web application will run on http://localhost:6565/aws/
 
 Copyrights & Disclaimers
 ------------------------

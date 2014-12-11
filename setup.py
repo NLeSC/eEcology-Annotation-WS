@@ -18,8 +18,10 @@ requires = [
     'pyramid_mako',
     ]
 
+exec(open('annotation/version.py').read())
+
 setup(name='Annotation',
-      version='0.0',
+      version=__version__,
       description='Annotation',
       long_description=README,
       classifiers=[
@@ -28,9 +30,9 @@ setup(name='Annotation',
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
         ],
-      author='',
-      author_email='',
-      url='',
+      author='Stefan Verhoeven',
+      author_email='s.verhoeven@esciencecenter.nl',
+      url='https://github.com/NLeSC/eEcology-Annotation-WS',
       keywords='web pyramid pylons',
       packages=find_packages(),
       include_package_data=True,

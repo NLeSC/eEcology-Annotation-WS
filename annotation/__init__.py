@@ -27,6 +27,7 @@ from pyramid.events import subscriber
 from pyramid.security import Allow, Authenticated, ALL_PERMISSIONS, DENY_ALL
 from pyramid.security import unauthenticated_userid
 from pyramid.renderers import JSON
+from .version import __version__
 
 logger = logging.getLogger(__package__)
 
