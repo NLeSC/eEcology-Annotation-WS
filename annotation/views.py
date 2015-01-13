@@ -14,7 +14,6 @@
 
 import logging
 from iso8601 import parse_date
-from iso8601.iso8601 import UTC
 from pyramid.view import view_config
 
 logger = logging.getLogger(__package__)
@@ -53,25 +52,10 @@ def fetchTrack(cur, trackerId, start, end):
     , round(s.longitude::numeric, 5) lon
     , s.altitude
     , s.altitude altitude_asl
-    , coalesce(nullif(
-            (
-            SELECT max(the_data[floor(((st_ymax(bbox) - (st_y(location)))    / abs(cellsize_y))+1)]
-                     [floor(((st_x(location)- st_xmin(bbox)) / abs(cellsize_x))+1)])::float
-            FROM elevation.srtm3
-            WHERE bbox && location
-            )
-        , -9999
-        )
-        , (
-        SELECT max(the_data[floor(((st_ymax(bbox) - (st_y(location)))    / abs(cellsize_y))+1)]
-                 [floor(((st_x(location)- st_xmin(bbox)) / abs(cellsize_x))+1)])::float
-        FROM elevation.srtm30
-        WHERE bbox && location
-        )
-    ) AS ground_elevation
+    , s.altitude - s.altitude_agl AS ground_elevation
     , s.temperature
-    , round(s.speed::numeric, 5) AS speed
-    ,round((
+    , round(s.speed_2d::numeric, 5) AS speed
+    , round((
       ST_Length_Spheroid(ST_MakeLine(location, lag(location) over (order by device_info_serial, date_time)), 'SPHEROID["WGS 84",6378137,298.257223563]')
       /
       EXTRACT(EPOCH FROM (date_time - lag(date_time) over (order by device_info_serial, date_time)))
