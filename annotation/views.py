@@ -73,7 +73,7 @@ def fetchTrack(cur, trackerId, start, end):
     gps.ee_tracking_speed_limited s
     LEFT JOIN
     (
-    SELECT date_time
+    SELECT device_info_serial, date_time
     , array_agg(round(a.index/%s, 4) ORDER BY date_time, index) time_acceleration
     , array_agg(round(((x_acceleration-x_o)/x_s)::numeric, 4) ORDER BY date_time, index) x_acceleration
     , array_agg(round(((y_acceleration-y_o)/y_s)::numeric, 4) ORDER BY date_time, index) y_acceleration
@@ -89,8 +89,8 @@ def fetchTrack(cur, trackerId, start, end):
     ) tu USING (device_info_serial)
     WHERE
     device_info_serial = %s AND date_time BETWEEN %s AND %s
-    GROUP BY date_time
-    ) aa USING (date_time)
+    GROUP BY device_info_serial, date_time
+    ) aa USING (device_info_serial, date_time)
     WHERE
     device_info_serial = %s AND date_time BETWEEN %s AND %s
     AND userflag != 1 AND longitude IS NOT NULL
