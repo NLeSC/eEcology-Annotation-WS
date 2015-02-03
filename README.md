@@ -6,6 +6,7 @@ Webservice for eEcology Annotation project.
 Start development server
 -------------------------
 
+    python setup.py develop
     cp development.ini-dist development.ini
     # adjust database settings
     . env/bin/activate
