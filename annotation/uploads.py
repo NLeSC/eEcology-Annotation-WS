@@ -86,10 +86,10 @@ class Upload(object):
     @view_config(route_name='annotations.csv')
     def annotations(self):
         cursor = self.db.cursor()
-        sql_template = 'SELECT device_info_serial AS id, date_time AS ts, class_id AS class FROM {table} WHERE device_info_serial=%(tracker)s ORDER BY device_info_serial, date_time'
+        sql_template = 'SELECT device_info_serial, date_time, class_id FROM {table} WHERE device_info_serial=%(tracker)s ORDER BY device_info_serial, date_time'
         sql = sql_template.format(table=self.table)
         cursor.execute(sql, {'tracker': self.tracker_id})
-        annotations = ['id,ts,class']
+        annotations = ['device_info_serial,date_time,class_id']
         for a in cursor.fetchall():
-            annotations.append(str(a['id']) + ',' + a['ts'].isoformat() + 'Z,' + str(a['class']))
+            annotations.append(str(a['device_info_serial']) + ',' + a['date_time'].isoformat() + 'Z,' + str(a['class_id']))
         return Response("\n".join(annotations), content_type="text/csv")
