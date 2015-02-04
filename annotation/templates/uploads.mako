@@ -16,7 +16,7 @@
 </div>
 
 <div class="row">
-    <form method="POST" role="form">
+    <form method="GET" role="form">
         <label for="table">Table (schema.table):</label>
         <input name="table" size="60" value="${table}">
         <input class="btn btn-default" type="submit"/>
@@ -26,11 +26,27 @@
     <p>
         Available trackers in table:
     </p>
-    <ul>
+    <table class="table table-hover">
+    <thead>
+    <tr>
+    <th>ID</th>
+    <th>Start</th>
+    <th>End</th>
+    <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
         % for tracker in trackers:
-        <li>
-            <a class="btn btn-default" href="${request.route_path('upload.html', table=table, tracker=tracker['id'])}">${tracker['id']}, ${tracker['start']} - ${tracker['end']}</a>
-        </li>
+        <tr>
+           <td>${tracker['id']}</td>
+           <td>${tracker['start']}</td>
+           <td>${tracker['end']}</td>
+           <td>
+           <a class="btn btn-primary" href="${request.route_path('annotations.html', table=table, _query=dict(id=tracker['id'], start=tracker['start'].isoformat(), end=tracker['end'].isoformat()))}" title="Visualize"><span class="glyphicon glyphicon-eye-open"></span></a>
+           <a class="btn btn-default" href="${request.route_path('annotations.csv', table=table, _query=dict(id=tracker['id'], start=tracker['start'].isoformat(), end=tracker['end'].isoformat()))}" title="Download CSV"><span class="glyphicon glyphicon-download"></span></a>
+           </td>
+        </tr>
         % endfor
-    </ul>
+    </tbody>
+    </table>
 </div>

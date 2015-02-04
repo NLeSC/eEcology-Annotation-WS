@@ -14,9 +14,9 @@
 
 import logging
 from iso8601 import parse_date
-from iso8601.iso8601 import UTC
 from pyramid.view import view_config
 from pyramid.response import Response
+import simplejson
 
 logger = logging.getLogger(__package__)
 
@@ -43,9 +43,8 @@ class Upload(object):
         self.request = request
         self.db = request.db
         self.table = request.matchdict.get('table', '')
-        self.tracker_id = request.matchdict.get('tracker', 0)
 
-    def fetch_classifications(self):
+    def fetch_classes(self):
         cursor = self.db.cursor()
         sql_template = "SELECT DISTINCT class_id AS id, class_name AS label, 'rgb(' || floor(class_red*255) ||',' || floor(class_green*255) || ',' || floor(class_blue*255) || ')' AS color FROM {table} ORDER BY class_id"
         sql = sql_template.format(table=self.table)
@@ -54,13 +53,43 @@ class Upload(object):
 
     def fetch_trackers(self):
         cursor = self.db.cursor()
-        sql_template = 'SELECT device_info_serial AS id, MIN(date_time) AS start, MAX(date_time) AS end FROM {table} GROUP BY device_info_serial ORDER BY device_info_serial'
+        sql_template = """SELECT
+          device_info_serial AS id,
+          TIMEZONE('zulu', MIN(date_time)) AS start,
+          TIMEZONE('zulu', MAX(date_time)) AS end,
+        COUNT(*) AS count
+        FROM {table}
+        GROUP BY device_info_serial
+        ORDER BY device_info_serial
+        """
         sql = sql_template.format(table=self.table)
         cursor.execute(sql)
         trackers = cursor.fetchall()
-        for tracker in trackers:
-            tracker['annotations'] = self.request.route_path('annotations.csv', table=self.table, tracker=tracker['id'])
         return trackers
+
+    def fetch_annotations_as_csv(self, tracker_id, start, end):
+        cursor = self.db.cursor()
+        sql_template = '''SELECT
+          device_info_serial,
+          date_time,
+          class_id
+        FROM {table}
+        WHERE
+          device_info_serial=%(tracker)s
+        AND
+          date_time BETWEEN %(start)s AND %(end)s
+        ORDER BY
+          device_info_serial, date_time
+        '''
+        sql = sql_template.format(table=self.table)
+        cursor.execute(sql, {'tracker': tracker_id,
+                             'start': start,
+                             'end': end,
+                             })
+        annotations = ['device_info_serial,date_time,class_id']
+        for a in cursor.fetchall():
+            annotations.append(str(a['device_info_serial']) + ',' + a['date_time'].isoformat() + 'Z,' + str(a['class_id']))
+        return "\n".join(annotations)
 
     @view_config(route_name='uploads.html', renderer='uploads.mako')
     def index(self):
@@ -71,25 +100,29 @@ class Upload(object):
             self.table = table
 
         trackers = self.fetch_trackers()
+
         return {'trackers': trackers, 'table': self.table}
 
-    @view_config(route_name='upload.html', renderer='upload.mako')
+    @view_config(route_name='annotations.html', renderer='upload.mako')
     def upload_html(self):
-        return {'tracker_id': self.tracker_id, 'table': self.table}
-
-    @view_config(route_name='meta.json', renderer='json')
-    def meta_json(self):
-        classifications = self.fetch_classifications()
-        trackers = self.fetch_trackers()
-        return {'classifications': classifications, 'trackers': trackers}
+        tracker_id = self.request.params.get('id', 0)
+        start = parse_date(self.request.params['start']).isoformat()
+        end = parse_date(self.request.params['end']).isoformat()
+        classes = self.fetch_classes()
+        annotationsUrl = self.request.route_path('annotations.csv',
+                                                  table=self.table,
+                                                  )
+        return {'tracker_id': tracker_id,
+                'start': start,
+                'end': end,
+                'classes': simplejson.dumps(classes),
+                'annotationsUrl': annotationsUrl,
+                }
 
     @view_config(route_name='annotations.csv')
-    def annotations(self):
-        cursor = self.db.cursor()
-        sql_template = 'SELECT device_info_serial, date_time, class_id FROM {table} WHERE device_info_serial=%(tracker)s ORDER BY device_info_serial, date_time'
-        sql = sql_template.format(table=self.table)
-        cursor.execute(sql, {'tracker': self.tracker_id})
-        annotations = ['device_info_serial,date_time,class_id']
-        for a in cursor.fetchall():
-            annotations.append(str(a['device_info_serial']) + ',' + a['date_time'].isoformat() + 'Z,' + str(a['class_id']))
-        return Response("\n".join(annotations), content_type="text/csv")
+    def annotations_as_csv(self):
+        tracker_id = self.request.params.get('id', 0)
+        start = parse_date(self.request.params['start']).isoformat()
+        end = parse_date(self.request.params['end']).isoformat()
+        csv = self.fetch_annotations_as_csv(tracker_id, start, end)
+        return Response(csv, content_type="text/csv")

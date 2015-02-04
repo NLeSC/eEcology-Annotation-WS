@@ -3,7 +3,7 @@
 # http://docs.pylonsproject.org/projects/pyramid/en/latest/narr/environment.html
 ###
 
-[app:main]
+[app:aws]
 use = egg:Annotation
 
 pyramid.reload_templates = true
@@ -24,6 +24,10 @@ dsn = host=db.e-ecology.sara.nl dbname=eecology user={username} password={passwo
 ###
 # wsgi server configuration
 ###
+
+[composite:main]
+use = egg:Paste#urlmap
+/aws = aws
 
 [server:main]
 use = egg:waitress#main

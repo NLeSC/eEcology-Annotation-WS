@@ -24,7 +24,7 @@ and append after 'https://www.google.com/jsapi?autoload=' in url encoded format.
 <script type="text/javascript" src="${request.static_path('annotation:static/table.js')}"></script>
 <script type="text/javascript">
 Ext.onReady(function() {
-    loadTrackerAndAnnotation('${table}', ${tracker_id});
+    loadTrackerAndAnnotation(${classes | n}, '${annotationsUrl}');
 });
 </script>
 </head>
