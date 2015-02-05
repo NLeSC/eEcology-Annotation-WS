@@ -21,7 +21,7 @@ import simplejson
 logger = logging.getLogger(__package__)
 
 
-class Upload(object):
+class UploadViews(object):
     """
     Serves annotations from a table with following structure::
 
@@ -65,6 +65,11 @@ class Upload(object):
         sql = sql_template.format(table=self.table)
         cursor.execute(sql)
         trackers = cursor.fetchall()
+        for tracker in trackers:
+            tracker['size'] = self.trackSize(tracker['id'], tracker['start'], tracker['end'])
+            tracker['page_size'] = 50
+            tracker['first_page'] = self.tsTrackAfter(tracker['id'], tracker['start'], tracker['end'], tracker['page_size'])
+            tracker['last_page'] = self.tsTrackBefore(tracker['id'], tracker['start'], tracker['end'], tracker['page_size'])
         return trackers
 
     def fetch_annotations_as_csv(self, tracker_id, start, end):
@@ -89,10 +94,75 @@ class Upload(object):
         annotations = ['device_info_serial,date_time,class_id']
         for a in cursor.fetchall():
             annotations.append(str(a['device_info_serial']) + ',' + a['date_time'].isoformat() + 'Z,' + str(a['class_id']))
-        return "\n".join(annotations)
+        return "\n".join(annotations) + "\n"
+
+    def trackSize(self, tracker_id, start, end):
+        cursor = self.db.cursor()
+        sql = '''SELECT
+          COUNT(*) AS count
+        FROM gps.ee_tracking_speed_limited
+        WHERE
+          device_info_serial=%(tracker)s
+        AND
+          date_time BETWEEN %(start)s AND %(end)s
+        '''
+        cursor.execute(sql, {'tracker': tracker_id,
+                             'start': start,
+                             'end': end,
+                             })
+        return cursor.fetchone()['count']
+
+    def tsTrackAfter(self, tracker_id, start, end, count):
+        cursor = self.db.cursor()
+        sql = '''SELECT
+          date_time
+        FROM gps.ee_tracking_speed_limited
+        WHERE
+          device_info_serial=%(tracker)s
+        AND
+          date_time BETWEEN %(start)s AND %(end)s
+        ORDER BY date_time
+        LIMIT 1
+        OFFSET %(count)s
+        '''
+        cursor.execute(sql, {'tracker': tracker_id,
+                             'start': start,
+                             'end': end,
+                             'count': count,
+                             })
+
+        result = cursor.fetchone()
+        if result:
+            return result['date_time']
+        else:
+            return end
+
+    def tsTrackBefore(self, tracker_id, start, end, count):
+        cursor = self.db.cursor()
+        sql = '''SELECT
+          date_time
+        FROM gps.ee_tracking_speed_limited
+        WHERE
+          device_info_serial=%(tracker)s
+        AND
+          date_time BETWEEN %(start)s AND %(end)s
+        ORDER BY date_time DESC
+        LIMIT 1
+        OFFSET %(count)s
+        '''
+        cursor.execute(sql, {'tracker': tracker_id,
+                             'start': start,
+                             'end': end,
+                             'count': count,
+                             })
+        result = cursor.fetchone()
+        if result:
+            return result['date_time']
+        else:
+            return start
 
     @view_config(route_name='uploads.html', renderer='uploads.mako')
-    def index(self):
+    def uploads(self):
         table = self.request.params.get('table', '')
         if table == '':
             return {'trackers': [], 'table': ''}
@@ -104,8 +174,8 @@ class Upload(object):
         return {'trackers': trackers, 'table': self.table}
 
     @view_config(route_name='annotations.html', renderer='upload.mako')
-    def upload_html(self):
-        tracker_id = self.request.params.get('id', 0)
+    def upload(self):
+        tracker_id = int(self.request.params.get('id', 0))
         start = parse_date(self.request.params['start']).isoformat()
         end = parse_date(self.request.params['end']).isoformat()
         classes = self.fetch_classes()

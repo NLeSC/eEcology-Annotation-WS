@@ -21,7 +21,7 @@ from mock import Mock, ANY
 from pyramid import testing
 import annotation.views as views
 import annotation
-from annotation.uploads import Upload
+from annotation.uploads import UploadViews
 
 
 class ConnectTests(unittest.TestCase):
@@ -109,38 +109,92 @@ class AnnotationTests(unittest.TestCase):
         self.assertEquals(result, [1, 2, 3])
 
 
-class UploadsTest(unittest.TestCase):
+class UploadViewsTest(unittest.TestCase):
     def setUp(self):
         self.config = testing.setUp()
         self.request = testing.DummyRequest()
         self.request.db = Mock()
+        self.cursor = Mock()
+        self.request.db.cursor.return_value = self.cursor
 
     def tearDown(self):
         testing.tearDown()
 
-    def test_constructor_nourlparameters_trackerIsEmpty(self):
-        upload = Upload(self.request)
-
-        self.assertEquals(upload.tracker_id, 0)
-
     def test_constructor_nourlparameters_tableIsEmpty(self):
-        upload = Upload(self.request)
+        views = UploadViews(self.request)
 
-        self.assertEquals(upload.table, '')
+        self.assertEquals(views.table, '')
 
     def test_constructor_url_parameters_trackerAndTableFilled(self):
         self.request.matchdict['table'] = 'mytable'
-        self.request.matchdict['tracker'] = 1234
 
-        upload = Upload(self.request)
+        views = UploadViews(self.request)
 
-        self.assertEquals(upload.table, 'mytable')
-        self.assertEquals(upload.tracker_id, 1234)
+        self.assertEquals(views.table, 'mytable')
 
-    def test_upload_html(self):
-        upload = Upload(self.request)
+    def test_uploads_notableselected(self):
+        views = UploadViews(self.request)
 
-        response = upload.upload_html()
+        response = views.uploads()
 
-        expected_response = {'tracker_id': 0, 'table': ''}
+        expected_response = {'trackers': [], 'table': ''}
         self.assertEqual(response, expected_response)
+
+    def test_uploads_selectedtable_listsoftrackers(self):
+        self.request.params['table'] = 'mytable'
+        views = UploadViews(self.request)
+        rows = [{
+                 'id': 355,
+                 'start': datetime(2010, 6, 28, 0, 0, 0, 0, UTC),
+                 'end': datetime(2010, 6, 28, 12, 0, 0, 0, UTC),
+                 'count:': 1,
+                 }]
+        self.cursor.fetchall.return_value = rows
+
+        response = views.uploads()
+
+        expected = {}
+        self.assertEqual(response, expected)
+
+    def test_upload(self):
+        self.request.matchdict['table'] = 'mytable'
+        self.request.params['id'] = '355'
+        self.request.params['start'] = '2010-06-27T00:00:00+00:00'
+        self.request.params['end'] = '2010-06-29T00:00:00+00:00'
+        self.config.add_route('annotations.csv', '/uploads/{table}/annotations.csv')
+        views = UploadViews(self.request)
+        rows = [{
+                 'id': 3,
+                 'label': 'flying',
+                 'color': 'rgb(0,0,255)',
+                 }]
+        self.cursor.fetchall.return_value = rows
+
+        response = views.upload()
+
+        expected_response = {'annotationsUrl': '/uploads/mytable/annotations.csv',
+                             'classes': '[{"color": "rgb(0,0,255)", "id": 3, "label": "flying"}]',
+                             'end': '2010-06-29T00:00:00+00:00',
+                             'start': '2010-06-27T00:00:00+00:00',
+                             'tracker_id': 355,
+                             }
+        self.assertEqual(response, expected_response)
+
+    def test_annotations_as_csv(self):
+        self.request.matchdict['table'] = 'mytable'
+        self.request.params['id'] = '355'
+        self.request.params['start'] = '2010-06-27T00:00:00+00:00'
+        self.request.params['end'] = '2010-06-29T00:00:00+00:00'
+        views = UploadViews(self.request)
+        rows = [{
+                 'device_info_serial': 355,
+                 'date_time': datetime(2010, 6, 28, 0, 0, 0, 0, UTC),
+                 'class_id': 3
+                 }]
+        self.cursor.fetchall.return_value = rows
+
+        response = views.annotations_as_csv()
+
+        expected_body = 'device_info_serial,date_time,class_id\n355,2010-06-28T00:00:00+00:00Z,3\n'
+        self.assertEqual(response.body, expected_body)
+
