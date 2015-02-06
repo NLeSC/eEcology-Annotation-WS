@@ -167,6 +167,35 @@ class UploadViewsTest(unittest.TestCase):
                     }
         self.assertEqual(response, expected)
 
+    def test_uploads_windowtoosmall_listsoftrackers(self):
+        self.request.params['table'] = 'mytable'
+        views = UploadViews(self.request)
+        rows = [{
+                 'id': 355,
+                 'start': datetime(2010, 6, 28, 0, 0, 0, 0, UTC),
+                 'end': datetime(2010, 6, 28, 12, 0, 0, 0, UTC),
+                 'count:': 1,
+                 }]
+        self.cursor.fetchall.return_value = rows
+        views.track_size = Mock(return_value=1)
+        self.cursor.fetchone.return_value = None
+
+        response = views.uploads()
+
+        expected = {'table': 'mytable',
+                    'trackers': [{'count:': 1,
+                                  'end': datetime(2010, 6, 28, 12, 0, 0, 0, UTC),
+                                  'first_page': datetime(2010, 6, 28, 12, 0, 0, 0, UTC),
+                                  'id': 355,
+                                  'last_page': datetime(2010, 6, 28, 0, 0, 0, 0, UTC),
+                                  'page_size': 5000,
+                                  'size': 1,
+                                  'start': datetime(2010, 6, 28, 0, 0, 0, 0, UTC)
+                                  }]
+                    }
+        self.assertEqual(response, expected)
+
+
     def test_upload(self):
         self.request.matchdict['table'] = 'mytable'
         self.request.params['id'] = '355'
@@ -183,7 +212,7 @@ class UploadViewsTest(unittest.TestCase):
 
         response = views.upload()
 
-        expected_response = {'annotationsUrl': '/uploads/mytable/annotations.csv',
+        expected_response = {'annotations_url': '/uploads/mytable/annotations.csv',
                              'classes': '[{"color": "rgb(0,0,255)", "id": 3, "label": "flying"}]',
                              'end': '2010-06-29T00:00:00+00:00',
                              'start': '2010-06-27T00:00:00+00:00',

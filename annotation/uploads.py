@@ -180,14 +180,14 @@ class UploadViews(object):
         start = parse_date(self.request.params['start']).isoformat()
         end = parse_date(self.request.params['end']).isoformat()
         classes = self.fetch_classes()
-        annotationsUrl = self.request.route_path('annotations.csv',
+        annotations_url = self.request.route_path('annotations.csv',
                                                   table=self.table,
                                                   )
         return {'tracker_id': tracker_id,
                 'start': start,
                 'end': end,
                 'classes': simplejson.dumps(classes),
-                'annotationsUrl': annotationsUrl,
+                'annotations_url': annotations_url,
                 }
 
     @view_config(route_name='annotations.csv')
