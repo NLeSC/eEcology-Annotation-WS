@@ -150,10 +150,21 @@ class UploadViewsTest(unittest.TestCase):
                  'count:': 1,
                  }]
         self.cursor.fetchall.return_value = rows
+        self.cursor.fetchone.return_value = {'date_time': datetime(2010, 6, 28, 10, 0, 0, 0, UTC), 'count': 1}
 
         response = views.uploads()
 
-        expected = {}
+        expected = {'table': 'mytable',
+                    'trackers': [{'count:': 1,
+                                  'end': datetime(2010, 6, 28, 12, 0, 0, 0, UTC),
+                                  'first_page': datetime(2010, 6, 28, 10, 0, 0, 0, UTC),
+                                  'id': 355,
+                                  'last_page': datetime(2010, 6, 28, 10, 0, 0, 0, UTC),
+                                  'page_size': 5000,
+                                  'size': 1,
+                                  'start': datetime(2010, 6, 28, 0, 0, 0, 0, UTC)
+                                  }]
+                    }
         self.assertEqual(response, expected)
 
     def test_upload(self):

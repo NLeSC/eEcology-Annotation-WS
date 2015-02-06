@@ -110,7 +110,8 @@ class UploadViews(object):
                              'start': start,
                              'end': end,
                              })
-        return cursor.fetchone()['count']
+        result = cursor.fetchone()
+        return result['count']
 
     def ts_track_after(self, tracker_id, start, end, count):
         cursor = self.db.cursor()
