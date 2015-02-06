@@ -14,8 +14,9 @@
 
 import logging
 from iso8601 import parse_date
-from pyramid.view import view_config
+from pyramid.httpexceptions import HTTPFound
 from pyramid.response import Response
+from pyramid.view import view_config
 import simplejson
 
 logger = logging.getLogger(__package__)
@@ -176,6 +177,8 @@ class UploadViews(object):
 
     @view_config(route_name='annotations.html', renderer='upload.mako')
     def upload(self):
+        if not set(['id', 'start', 'end']).issubset(self.request.params.keys()):
+            return HTTPFound(self.request.route_path('uploads.html', _query={'table': self.table}))
         tracker_id = int(self.request.params.get('id', 0))
         start = parse_date(self.request.params['start']).isoformat()
         end = parse_date(self.request.params['end']).isoformat()

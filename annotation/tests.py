@@ -22,6 +22,7 @@ from pyramid import testing
 import annotation.views as views
 import annotation
 from annotation.uploads import UploadViews
+from pyramid.httpexceptions import HTTPFound
 
 
 class ConnectTests(unittest.TestCase):
@@ -219,6 +220,17 @@ class UploadViewsTest(unittest.TestCase):
                              'tracker_id': 355,
                              }
         self.assertEqual(response, expected_response)
+
+    def test_upload_withoutselection(self):
+        self.request.matchdict['table'] = 'mytable'
+        self.config.add_route('uploads.html', '/uploads.html')
+        views = UploadViews(self.request)
+
+        response = views.upload()
+
+        expected_response = HTTPFound('/uploads.html?table=mytable')
+        self.assertIsInstance(response, HTTPFound)
+        self.assertEqual(response.location, expected_response.location)
 
     def test_annotations_as_csv(self):
         self.request.matchdict['table'] = 'mytable'
