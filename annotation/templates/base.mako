@@ -23,7 +23,7 @@
         <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
             <div class="container">
                 <p class="text-muted">
-                    eEcology Annotation tool <%! from annotation import __version__ %>v${__version__} is a virtual lab of <a target="_blank" href="http://www.uva-bits.nl">UvA-BiTS</a>,
+                    <a href="${request.route_path('home')}">eEcology Annotation tool</a> <%! from annotation import __version__ %>v${__version__} is a virtual lab of <a target="_blank" href="http://www.uva-bits.nl">UvA-BiTS</a>,
                     &copy; <a target="_blank" href="http://www.esciencecenter.nl">Netherlands eScience Center</a> 2014
                 </p>
             </div>

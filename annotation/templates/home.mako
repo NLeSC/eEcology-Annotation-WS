@@ -44,6 +44,9 @@
         <p>
             3 axis acceleration burst of a GPS fix
         </p>
+        <p>
+        Visualized as a movie strip.
+        </p>
     </div>
 </div>
 <div class="row">
@@ -66,6 +69,17 @@
         <h2>Video integration</h2>
         <p>
             Annotation using a syncronized video. Video can be uploaded or supplied as url.
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h2>Custom data integration</h2>
+        <p>
+            Visualize your own data besides tracker and annotations.
+        </p>
+        <p>
+        By uploading a CSV file.
         </p>
     </div>
 </div>

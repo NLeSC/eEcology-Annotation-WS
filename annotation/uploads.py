@@ -67,7 +67,7 @@ class UploadViews(object):
         trackers = cursor.fetchall()
         for tracker in trackers:
             tracker['size'] = self.trackSize(tracker['id'], tracker['start'], tracker['end'])
-            tracker['page_size'] = 50
+            tracker['page_size'] = 5000
             tracker['first_page'] = self.tsTrackAfter(tracker['id'], tracker['start'], tracker['end'], tracker['page_size'])
             tracker['last_page'] = self.tsTrackBefore(tracker['id'], tracker['start'], tracker['end'], tracker['page_size'])
         return trackers
