@@ -1,0 +1,10 @@
+language: python
+python:
+  - "2.7"
+install:
+  - 'python setup.py develop'
+script:
+  - 'nosetests --with-xunit --cover-erase --with-coverage --cover-package=annotation --cover-branches --cover-xml'
+after_script:
+  - 'pip install scrutinizer-ocular'
+  - ocular
