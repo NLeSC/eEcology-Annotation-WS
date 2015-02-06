@@ -3,5 +3,4 @@ function loadTrackerAndAnnotation(classes, annotationsUrl) {
 	ctrl.getClassificationsStore().loadRawData(classes);
     ctrl.getAnnotationsStore().enableRemoteMode(annotationsUrl);
     var button = Ext.ComponentQuery.query('button[action=loadTrack]')[0];
-    ctrl.loadTrack(button);
 }
