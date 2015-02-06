@@ -68,8 +68,8 @@ class UploadViews(object):
         for tracker in trackers:
             tracker['size'] = self.track_size(tracker['id'], tracker['start'], tracker['end'])
             tracker['page_size'] = 5000
-            tracker['first_page'] = self.tsTrackAfter(tracker['id'], tracker['start'], tracker['end'], tracker['page_size'])
-            tracker['last_page'] = self.tsTrackBefore(tracker['id'], tracker['start'], tracker['end'], tracker['page_size'])
+            tracker['first_page'] = self.ts_track_after(tracker['id'], tracker['start'], tracker['end'], tracker['page_size'])
+            tracker['last_page'] = self.ts_track_before(tracker['id'], tracker['start'], tracker['end'], tracker['page_size'])
         return trackers
 
     def fetch_annotations_as_csv(self, tracker_id, start, end):
@@ -112,7 +112,7 @@ class UploadViews(object):
                              })
         return cursor.fetchone()['count']
 
-    def tsTrackAfter(self, tracker_id, start, end, count):
+    def ts_track_after(self, tracker_id, start, end, count):
         cursor = self.db.cursor()
         sql = '''SELECT
           date_time
@@ -137,7 +137,7 @@ class UploadViews(object):
         else:
             return end
 
-    def tsTrackBefore(self, tracker_id, start, end, count):
+    def ts_track_before(self, tracker_id, start, end, count):
         cursor = self.db.cursor()
         sql = '''SELECT
           date_time
