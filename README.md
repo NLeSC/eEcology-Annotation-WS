@@ -1,6 +1,10 @@
 eEcology-Annotation-WS
 ======================
 
+[![Build Status](https://travis-ci.org/NLeSC/eEcology-Annotation-WS.svg?branch=master)](https://travis-ci.org/NLeSC/eEcology-Annotation-WS)
+[![Code Coverage](https://scrutinizer-ci.com/g/NLeSC/eEcology-Annotation-WS/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/NLeSC/eEcology-Annotation-WS/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/NLeSC/eEcology-Annotation-WS/badges/build.png?b=master)](https://scrutinizer-ci.com/g/NLeSC/eEcology-Annotation-WS/build-status/master)
+
 Webservice for eEcology Annotation project.
 
 Start development server

@@ -16,6 +16,7 @@ requires = [
     'gunicorn',
     'simplejson',
     'pyramid_mako',
+    'paste',
     ]
 
 exec(open('annotation/version.py').read())
