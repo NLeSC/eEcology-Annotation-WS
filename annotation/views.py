@@ -28,10 +28,10 @@ def home(request):
 def trackers(request):
     """Returns a list of tracker identifiers the user has access to"""
     cur = request.db.cursor()
-    return {'trackers': fetchTrackers(cur)}
+    return {'trackers': fetch_trackers(cur)}
 
 
-def fetchTrackers(cur):
+def fetch_trackers(cur):
     cur.execute("""
         SELECT DISTINCT device_info_serial as id
         FROM gps.ee_tracker_limited
@@ -41,7 +41,7 @@ def fetchTrackers(cur):
     return list(cur)
 
 
-def fetchTrack(cur, trackerId, start, end):
+def fetch_track(cur, tracker_id, start, end):
     # TODO accelartion freq is hardcoded
     freq = 20.0
 
@@ -97,7 +97,8 @@ def fetchTrack(cur, trackerId, start, end):
     ORDER BY date_time
     """
 
-    cur.execute(sql2, (freq, trackerId, start, end, trackerId, start, end))
+    logger.debug('Fetching track data for id:{}, start:{}, end:{}'.format(tracker_id, start, end))
+    cur.execute(sql2, (freq, tracker_id, start, end, tracker_id, start, end))
     return cur
 
 
@@ -105,7 +106,7 @@ def fetchTrack(cur, trackerId, start, end):
 def tracker(request):
     """Returns gps+accel data of tracker in a certain time range"""
     cur = request.db.cursor()
-    trackerId = int(request.matchdict['id'])
+    tracker_id = int(request.matchdict['id'])
     start = parse_date(request.matchdict['start']).isoformat()
     end = parse_date(request.matchdict['end']).isoformat()
-    return fetchTrack(cur, trackerId, start, end)
+    return fetch_track(cur, tracker_id, start, end)

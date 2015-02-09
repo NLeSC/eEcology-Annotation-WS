@@ -87,6 +87,7 @@ class UploadViews(object):
         ORDER BY
           device_info_serial, date_time
         '''
+        logger.debug('Fetching annotations for id:{}, start:{}, end:{}'.format(tracker_id, start, end))
         sql = sql_template.format(table=self.table)
         cursor.execute(sql, {'tracker': tracker_id,
                              'start': start,
@@ -165,6 +166,12 @@ class UploadViews(object):
 
     @view_config(route_name='uploads.html', renderer='uploads.mako')
     def uploads(self):
+        '''
+        Page with form to select table with annotations.
+
+        Query parameters:
+        - table: Postgresql schema and table seperated by a dot, eg myschema.mytable
+        '''
         table = self.request.params.get('table', '')
         if table == '':
             return {'trackers': [], 'table': ''}
@@ -177,6 +184,14 @@ class UploadViews(object):
 
     @view_config(route_name='annotations.html', renderer='upload.mako')
     def upload(self):
+        '''
+        Page with eEcology Annotation UI with annotations loaded from databases.
+
+        Query parameters:
+        - id: tracker id,
+        - start: start of time range in ISO8601 format
+        - end: end of time range in ISO8601 format
+        '''
         if not set(['id', 'start', 'end']).issubset(self.request.params.keys()):
             return HTTPFound(self.request.route_path('uploads.html', _query={'table': self.table}))
         tracker_id = int(self.request.params.get('id', 0))
@@ -195,8 +210,16 @@ class UploadViews(object):
 
     @view_config(route_name='annotations.csv')
     def annotations_as_csv(self):
+        '''
+        Returns annotations from a table with a tracker and time range selection.
+
+        Query parameters:
+        - id: tracker id,
+        - start: start of time range in ISO8601 format
+        - end: end of time range in ISO8601 format
+        '''
         tracker_id = self.request.params.get('id', 0)
         start = parse_date(self.request.params['start']).isoformat()
         end = parse_date(self.request.params['end']).isoformat()
         csv = self.fetch_annotations_as_csv(tracker_id, start, end)
-        return Response(csv, content_type="text/csv")
+        return Response(csv, content_type='text/csv')
