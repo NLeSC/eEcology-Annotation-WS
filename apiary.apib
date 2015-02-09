@@ -116,3 +116,19 @@ To open a job in the annotation tool use https://annotation.e-ecology.cloudlet.s
 + Response 200
 
     [Classification job][]
+
+## Annotations [/uploads/{table}/annotations.csv?id={tracker}&start={start}&end={end}]
+
++ Parameters
+    + table (number) ... Postgresql schema and table which contains annotations.
+    + tracker (number, `355`) ... Tracker identifier.
+    + start (string, `2010-06-28T00:00:00.000Z`) ... Start of track.
+    + end (string, `2010-06-29T00:00:00.000Z`) ... End of track.
+
+### Retrieve annotations [GET]
+
++ Response 200 (application/json)
+
+		device_info_serial, date_time, class_id
+		355,2010-06-28T02:13:20+00:00,3
+

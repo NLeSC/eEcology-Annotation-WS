@@ -1,5 +1,5 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>Annotation webservice</title><link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"><link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.2/css/font-awesome.min.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,700|Inconsolata|Raleway:200"><style>/* Highlight.js Theme */
-.tomorrow-comment,pre .comment,pre .title{color:#8e908c}.tomorrow-red,pre .attribute,pre .css .class,pre .css .id,pre .css .pseudo,pre .html .doctype,pre .regexp,pre .ruby .constant,pre .tag,pre .variable,pre .xml .doctype,pre .xml .pi,pre .xml .tag .title{color:#c82829}.tomorrow-orange,pre .built_in,pre .constant,pre .literal,pre .number,pre .params,pre .preprocessor{color:#f5871f}.tomorrow-yellow,pre .class,pre .css .rules .attribute,pre .ruby .class .title{color:#eab700}.tomorrow-green,pre .header,pre .inheritance,pre .ruby .symbol,pre .string,pre .value,pre .xml .cdata{color:#718c00}.tomorrow-aqua,pre .css .hexcolor{color:#3e999f}.tomorrow-blue,pre .coffeescript .title,pre .function,pre .javascript .title,pre .perl .sub,pre .python .decorator,pre .python .title,pre .ruby .function .title,pre .ruby .title .keyword{color:#4271ae}.tomorrow-purple,pre .javascript .function,pre .keyword{color:#8959a8}pre code{display:block;background:#fff;color:#4d4d4c;font-family:Menlo,Monaco,Consolas,monospace;line-height:1.5;border:1px solid #ccc;padding:10px}</style><style type="text/css">body,
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Annotation webservice</title><link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"><link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,700|Inconsolata|Raleway:200"><style>/* Highlight.js Theme Tomorrow */
+.hljs-comment,.hljs-title{color:#8e908c}.hljs-variable,.hljs-attribute,.hljs-tag,.hljs-regexp,.ruby .hljs-constant,.xml .hljs-tag .hljs-title,.xml .hljs-pi,.xml .hljs-doctype,.html .hljs-doctype,.css .hljs-id,.css .hljs-class,.css .hljs-pseudo{color:#c82829}.hljs-number,.hljs-preprocessor,.hljs-pragma,.hljs-built_in,.hljs-literal,.hljs-params,.hljs-constant{color:#f5871f}.ruby .hljs-class .hljs-title,.css .hljs-rules .hljs-attribute{color:#eab700}.hljs-string,.hljs-value,.hljs-inheritance,.hljs-header,.ruby .hljs-symbol,.xml .hljs-cdata{color:#718c00}.css .hljs-hexcolor{color:#3e999f}.hljs-function,.python .hljs-decorator,.python .hljs-title,.ruby .hljs-function .hljs-title,.ruby .hljs-title .hljs-keyword,.perl .hljs-sub,.javascript .hljs-title,.coffeescript .hljs-title{color:#4271ae}.hljs-keyword,.javascript .hljs-function{color:#8959a8}.hljs{display:block;background:white;color:#4d4d4c;padding:.5em}.coffeescript .javascript,.javascript .xml,.tex .hljs-formula,.xml .javascript,.xml .vbscript,.xml .css,.xml .hljs-cdata{opacity:.5}</style><style>body,
 h4,
 h5 {
   font-family: 'Roboto' sans-serif !important;
@@ -55,106 +55,175 @@ h4 {
   overflow: hidden;
 }
 .panel-heading code {
+  margin-left: 3px;
   color: #c7254e;
-  background-color: transparent;
+  background-color: rgba(255,255,255,0.7);
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
 }
 .panel-heading h3 {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+a.list-group-item:hover {
+  background-color: #f8f8f8;
+  border-left: 2px solid #555;
+  padding-left: 15px;
+}
+.indent {
+  display: block;
+  text-indent: 16px;
+}
+.list-group-item {
+  padding-left: 16px;
+}
+.list-group-item .toggle .open {
+  display: block;
+}
+.list-group-item .toggle .closed {
+  display: none;
+}
+.list-group-item.collapsed .toggle .open {
+  display: none;
+}
+.list-group-item.collapsed .toggle .closed {
+  display: block;
+}
 a.list-group-item {
+  font-size: 13px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
 a.list-group-item.heading {
+  font-size: 15px;
   background-color: #f5f5f5;
+}
+a.list-group-item.heading:hover {
+  background-color: #f8f8f8;
 }
 .list-group-item.collapse {
   display: none;
 }
-</style></head><body><a href="#top" class="text-muted back-to-top"><i class="fa fa-toggle-up"></i>&nbsp;Back to top</a><div class="container"><div class="row"><nav id="nav" style="margin-top: 38px;" class="col-md-3 collapse hidden-sm hidden-xs"><div class="list-group"><a href="#" class="list-group-item heading">Resource Group</a><a href="#-tracker-identifiers" class="list-group-item"><i class="fa fa-arrow-circle-down"></i>&nbsp;Tracker identifiers</a><a href="#-track" class="list-group-item"><i class="fa fa-arrow-circle-down"></i>&nbsp;Track</a><a href="#-classification-job" class="list-group-item"><i class="fa fa-arrow-circle-down"></i>&nbsp;Classification job</a></div><p style="text-align: center"><a href="https://public.e-ecology.sara.nl/aws/">https://public.e-ecology.sara.nl/aws/</a></p></nav><div class="col-md-9"><div><header><div class="page-header"><h1 id="top">Annotation webservice</h1></div></header><div class="description"><h2 id="authentication">Authentication</h2>
+.list-group-item.collapse.in {
+  display: block;
+}
+.list-group-item a span.closed {
+  display: none;
+}
+.list-group-item a span.open {
+  display: block;
+}
+.list-group-item a.collapsed span.closed {
+  display: block;
+}
+.list-group-item a.collapsed span.open {
+  display: none;
+}
+#nav {
+  width: inherit;
+  margin-top: 38px;
+  max-width: 255px;
+  top: 0;
+  bottom: 0;
+  padding-right: 12px;
+  padding-bottom: 12px;
+  overflow-y: auto;
+}
+@media (max-width: 1199px) {
+  #nav {
+    max-width: 212px;
+  }
+}
+</style></head><body><a href="#top" class="text-muted back-to-top"><i class="fa fa-toggle-up"></i>&nbsp;Back to top</a><div class="container"><div class="row"><div class="col-md-3"><nav id="nav" class="hidden-sm hidden-xs affix nav"><div class="list-group"><a data-toggle="" data-target="#-menu" href="#" class="list-group-item heading collapsed">Resource Group</a><div id="-menu"><a href="#-tracker-identifiers" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span>Tracker identifiers</a><a href="#-track" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span>Track</a><a href="#-classification-job" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span>Classification job</a><a href="#-annotations" style="border-top-left-radius: 0; border-top-right-radius: 0" class="list-group-item"><span class="badge alert-info"><i class="fa fa-arrow-down"></i></span>Annotations</a></div></div><p style="text-align: center; word-wrap: break-word;"><a href="https://public.e-ecology.sara.nl/aws/">https://public.e-ecology.sara.nl/aws/</a></p></nav></div><div class="col-md-8"><div><header><div class="page-header"><h1 id="top">Annotation webservice</h1></div></header><div class="description"><h2>Authentication</h2>
 <p>All requests must have a Basic authentication header.</p>
-</div></div><div><div class="panel panel-default"><div class="panel-heading"><h3 id="">Resource Group&nbsp;<a href="#"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="-tracker-identifiers">Tracker identifiers&nbsp;<a href="#-tracker-identifiers"><i class="fa fa-link"></i></a></h4><section id="-tracker-identifiers-get" class="panel panel-info"><div class="panel-heading"><span style="text-transform: lowercase" class="pull-right">Retrieve a list of tracker identifiers</span><a href="#-tracker-identifiers-get" class="btn btn-xs btn-primary">GET</a>&nbsp;<code>/trackers</code></div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#980668" class="pull-right">Toggle</a></li><li id="980668" class="list-group-item collapse"><h5>Headers</h5><pre><code><span class="attribute">Content-Type</span>: <span class="string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
-    "<span class="attribute">trackers</span>": <span class="value">[{
-        "<span class="attribute">id</span>": <span class="value"><span class="number">1</span>
+</div></div><div><div class="panel panel-default"><div class="panel-heading"><h3 id="">Resource Group&nbsp;<a href="#"><i class="fa fa-link"></i></a></h3></div><div class="panel-body"><h4 id="-tracker-identifiers">Tracker identifiers&nbsp;<a href="#-tracker-identifiers"><i class="fa fa-link"></i></a></h4><section id="-tracker-identifiers-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve a list of tracker identifiers</span></div><div style="float:left"><a href="#-tracker-identifiers-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/trackers</code></div></div><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#4ef173424718df3670dd995b870f9864" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="4ef173424718df3670dd995b870f9864" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">trackers</span>": <span class="hljs-value">[{
+        "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">1</span>
     </span>},{
-        "<span class="attribute">id</span>": <span class="value"><span class="number">2</span>
+        "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">2</span>
     </span>}]
 </span>}
-</code></pre></li></ul></section><h4 id="-track">Track&nbsp;<a href="#-track"><i class="fa fa-link"></i></a></h4><section id="-track-get" class="panel panel-info"><div class="panel-heading"><span style="text-transform: lowercase" class="pull-right">Retrieve track data</span><a href="#-track-get" class="btn btn-xs btn-primary">GET</a>&nbsp;<code>/track/{tracker}/{start}/{end}</code></div><div class="panel-body"><p>Retrieve track data for a certain tracker of a certain time range.</p>
+</code></pre></li></ul></section><h4 id="-track">Track&nbsp;<a href="#-track"><i class="fa fa-link"></i></a></h4><section id="-track-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve track data</span></div><div style="float:left"><a href="#-track-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/track/{tracker}/{start}/{end}</code></div></div><div class="panel-body"><p>Retrieve track data for a certain tracker of a certain time range.</p>
 </div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>tracker</dt><dd><code>number</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>355</span></span><p>Tracker identifier.</p>
 </dd><dt>start</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>2010-06-28T00:00:00.000Z</span></span><p>Start of track.</p>
 </dd><dt>end</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>2010-06-29T00:00:00.000Z</span></span><p>End of track.</p>
-</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#24047" class="pull-right">Toggle</a></li><li id="24047" class="list-group-item collapse"><h5>Headers</h5><pre><code><span class="attribute">Content-Type</span>: <span class="string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#c2c3c579b34eac6cab10f5bbc8f1c3f6" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="c2c3c579b34eac6cab10f5bbc8f1c3f6" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>[
     {
-        "<span class="attribute">tspeed</span>" : <span class="value"><span class="number">2.23991</span></span>,
-        "<span class="attribute">time_acceleration</span>" : <span class="value">[
-            <span class="number">0</span>, <span class="number">0.05</span>, <span class="number">0.1</span>, <span class="number">0.15</span>, <span class="number">0.2</span>, <span class="number">0.25</span>, <span class="number">0.3</span>, <span class="number">0.35</span>, <span class="number">0.4</span>, <span class="number">0.45</span>,
-            <span class="number">0.5</span>, <span class="number">0.55</span>, <span class="number">0.6</span>, <span class="number">0.65</span>, <span class="number">0.7</span>, <span class="number">0.75</span>, <span class="number">0.8</span>, <span class="number">0.85</span>, <span class="number">0.9</span>, <span class="number">0.95</span>,
-            <span class="number">1</span>, <span class="number">1.05</span>, <span class="number">1.1</span>, <span class="number">1.15</span>, <span class="number">1.2</span>, <span class="number">1.25</span>, <span class="number">1.3</span>, <span class="number">1.35</span>, <span class="number">1.4</span>, <span class="number">1.45</span>,
-            <span class="number">1.5</span>, <span class="number">1.55</span>, <span class="number">1.6</span>, <span class="number">1.65</span>, <span class="number">1.7</span>, <span class="number">1.75</span>, <span class="number">1.8</span>, <span class="number">1.85</span>, <span class="number">1.9</span>, <span class="number">1.95</span>
+        "<span class="hljs-attribute">tspeed</span>" : <span class="hljs-value"><span class="hljs-number">2.23991</span></span>,
+        "<span class="hljs-attribute">time_acceleration</span>" : <span class="hljs-value">[
+            <span class="hljs-number">0</span>, <span class="hljs-number">0.05</span>, <span class="hljs-number">0.1</span>, <span class="hljs-number">0.15</span>, <span class="hljs-number">0.2</span>, <span class="hljs-number">0.25</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.35</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">0.45</span>,
+            <span class="hljs-number">0.5</span>, <span class="hljs-number">0.55</span>, <span class="hljs-number">0.6</span>, <span class="hljs-number">0.65</span>, <span class="hljs-number">0.7</span>, <span class="hljs-number">0.75</span>, <span class="hljs-number">0.8</span>, <span class="hljs-number">0.85</span>, <span class="hljs-number">0.9</span>, <span class="hljs-number">0.95</span>,
+            <span class="hljs-number">1</span>, <span class="hljs-number">1.05</span>, <span class="hljs-number">1.1</span>, <span class="hljs-number">1.15</span>, <span class="hljs-number">1.2</span>, <span class="hljs-number">1.25</span>, <span class="hljs-number">1.3</span>, <span class="hljs-number">1.35</span>, <span class="hljs-number">1.4</span>, <span class="hljs-number">1.45</span>,
+            <span class="hljs-number">1.5</span>, <span class="hljs-number">1.55</span>, <span class="hljs-number">1.6</span>, <span class="hljs-number">1.65</span>, <span class="hljs-number">1.7</span>, <span class="hljs-number">1.75</span>, <span class="hljs-number">1.8</span>, <span class="hljs-number">1.85</span>, <span class="hljs-number">1.9</span>, <span class="hljs-number">1.95</span>
         ]</span>,
-        "<span class="attribute">lat</span>" : <span class="value"><span class="number">52.99744</span></span>,
-        "<span class="attribute">z_acceleration</span>" : <span class="value">[
-            <span class="number">1.3111</span>, <span class="number">1.6039</span>, <span class="number">1.7504</span>, <span class="number">1.019</span>, -<span class="number">0.0046</span>, <span class="number">0.2876</span>, <span class="number">0.7754</span>, <span class="number">1.3604</span>, <span class="number">1.7011</span>, <span class="number">1.5554</span>,
-            <span class="number">0.6775</span>, <span class="number">0.1168</span>, <span class="number">0.4097</span>, <span class="number">1.214</span>, <span class="number">1.5311</span>, <span class="number">1.8232</span>, <span class="number">1.3604</span>, <span class="number">0.3118</span>, <span class="number">0.239</span>, <span class="number">0.629</span>,
-            <span class="number">1.2625</span>, <span class="number">1.6039</span>, <span class="number">1.6525</span>, <span class="number">0.9461</span>, <span class="number">0.1411</span>, <span class="number">0.3361</span>, <span class="number">0.8483</span>, <span class="number">1.3847</span>, <span class="number">1.7011</span>, <span class="number">1.6282</span>,
-            <span class="number">0.7261</span>, <span class="number">0.1411</span>, <span class="number">0.3854</span>, <span class="number">1.1654</span>, <span class="number">1.4818</span>, <span class="number">1.7011</span>, <span class="number">1.2625</span>, <span class="number">0.3361</span>, <span class="number">0.2147</span>, <span class="number">0.5311</span>
+        "<span class="hljs-attribute">lat</span>" : <span class="hljs-value"><span class="hljs-number">52.99744</span></span>,
+        "<span class="hljs-attribute">z_acceleration</span>" : <span class="hljs-value">[
+            <span class="hljs-number">1.3111</span>, <span class="hljs-number">1.6039</span>, <span class="hljs-number">1.7504</span>, <span class="hljs-number">1.019</span>, -<span class="hljs-number">0.0046</span>, <span class="hljs-number">0.2876</span>, <span class="hljs-number">0.7754</span>, <span class="hljs-number">1.3604</span>, <span class="hljs-number">1.7011</span>, <span class="hljs-number">1.5554</span>,
+            <span class="hljs-number">0.6775</span>, <span class="hljs-number">0.1168</span>, <span class="hljs-number">0.4097</span>, <span class="hljs-number">1.214</span>, <span class="hljs-number">1.5311</span>, <span class="hljs-number">1.8232</span>, <span class="hljs-number">1.3604</span>, <span class="hljs-number">0.3118</span>, <span class="hljs-number">0.239</span>, <span class="hljs-number">0.629</span>,
+            <span class="hljs-number">1.2625</span>, <span class="hljs-number">1.6039</span>, <span class="hljs-number">1.6525</span>, <span class="hljs-number">0.9461</span>, <span class="hljs-number">0.1411</span>, <span class="hljs-number">0.3361</span>, <span class="hljs-number">0.8483</span>, <span class="hljs-number">1.3847</span>, <span class="hljs-number">1.7011</span>, <span class="hljs-number">1.6282</span>,
+            <span class="hljs-number">0.7261</span>, <span class="hljs-number">0.1411</span>, <span class="hljs-number">0.3854</span>, <span class="hljs-number">1.1654</span>, <span class="hljs-number">1.4818</span>, <span class="hljs-number">1.7011</span>, <span class="hljs-number">1.2625</span>, <span class="hljs-number">0.3361</span>, <span class="hljs-number">0.2147</span>, <span class="hljs-number">0.5311</span>
         ]</span>,
-        "<span class="attribute">x_acceleration</span>" : <span class="value">[
-            <span class="number">0.2051</span>, -<span class="number">0.0356</span>, -<span class="number">0.1455</span>, -<span class="number">0.0426</span>, -<span class="number">0.1223</span>, <span class="number">0.0952</span>, <span class="number">0.4056</span>, <span class="number">0.1331</span>, <span class="number">0.0163</span>, -<span class="number">0.0286</span>,
-            -<span class="number">0.1099</span>, <span class="number">0.0588</span>, <span class="number">0.1223</span>, <span class="number">0.346</span>, <span class="number">0.0836</span>, -<span class="number">0.0797</span>, -<span class="number">0.0449</span>, -<span class="number">0.2043</span>, <span class="number">0.0565</span>, <span class="number">0.2128</span>,
-            <span class="number">0.2446</span>, <span class="number">0.0279</span>, -<span class="number">0.0534</span>, -<span class="number">0.0495</span>, -<span class="number">0.1935</span>, <span class="number">0.0441</span>, <span class="number">0.428</span>, <span class="number">0.1184</span>, <span class="number">0.0511</span>, -<span class="number">0.0039</span>,
-            -<span class="number">0.1006</span>, <span class="number">0.0356</span>, <span class="number">0.1556</span>, <span class="number">0.3452</span>, <span class="number">0.0975</span>, -<span class="number">0.0875</span>, -<span class="number">0.0433</span>, -<span class="number">0.1803</span>, <span class="number">0.024</span>, <span class="number">0.1858</span>
+        "<span class="hljs-attribute">x_acceleration</span>" : <span class="hljs-value">[
+            <span class="hljs-number">0.2051</span>, -<span class="hljs-number">0.0356</span>, -<span class="hljs-number">0.1455</span>, -<span class="hljs-number">0.0426</span>, -<span class="hljs-number">0.1223</span>, <span class="hljs-number">0.0952</span>, <span class="hljs-number">0.4056</span>, <span class="hljs-number">0.1331</span>, <span class="hljs-number">0.0163</span>, -<span class="hljs-number">0.0286</span>,
+            -<span class="hljs-number">0.1099</span>, <span class="hljs-number">0.0588</span>, <span class="hljs-number">0.1223</span>, <span class="hljs-number">0.346</span>, <span class="hljs-number">0.0836</span>, -<span class="hljs-number">0.0797</span>, -<span class="hljs-number">0.0449</span>, -<span class="hljs-number">0.2043</span>, <span class="hljs-number">0.0565</span>, <span class="hljs-number">0.2128</span>,
+            <span class="hljs-number">0.2446</span>, <span class="hljs-number">0.0279</span>, -<span class="hljs-number">0.0534</span>, -<span class="hljs-number">0.0495</span>, -<span class="hljs-number">0.1935</span>, <span class="hljs-number">0.0441</span>, <span class="hljs-number">0.428</span>, <span class="hljs-number">0.1184</span>, <span class="hljs-number">0.0511</span>, -<span class="hljs-number">0.0039</span>,
+            -<span class="hljs-number">0.1006</span>, <span class="hljs-number">0.0356</span>, <span class="hljs-number">0.1556</span>, <span class="hljs-number">0.3452</span>, <span class="hljs-number">0.0975</span>, -<span class="hljs-number">0.0875</span>, -<span class="hljs-number">0.0433</span>, -<span class="hljs-number">0.1803</span>, <span class="hljs-number">0.024</span>, <span class="hljs-number">0.1858</span>
         ]</span>,
-        "<span class="attribute">date_time</span>" : <span class="value"><span class="string">"2010-06-28T00:27:58+00:00"</span></span>,
-        "<span class="attribute">direction</span>" : <span class="value">-<span class="number">162.87</span></span>,
-        "<span class="attribute">y_acceleration</span>" : <span class="value">[
-            -<span class="number">0.0358</span>, -<span class="number">0.3115</span>, -<span class="number">0.281</span>, -<span class="number">0.3077</span>, <span class="number">0.032</span>, -<span class="number">0.1013</span>, <span class="number">0.0251</span>, -<span class="number">0.2163</span>, -<span class="number">0.4037</span>, -<span class="number">0.3968</span>,
-            -<span class="number">0.1569</span>, <span class="number">0.0244</span>, -<span class="number">0.2148</span>, -<span class="number">0.1752</span>, -<span class="number">0.3511</span>, -<span class="number">0.3846</span>, -<span class="number">0.3077</span>, -<span class="number">0.0183</span>, -<span class="number">0.2087</span>, -<span class="number">0.179</span>,
-            -<span class="number">0.0708</span>, -<span class="number">0.2331</span>, -<span class="number">0.3503</span>, -<span class="number">0.2445</span>, <span class="number">0.0571</span>, -<span class="number">0.1889</span>, -<span class="number">0.2254</span>, -<span class="number">0.0838</span>, -<span class="number">0.3222</span>, -<span class="number">0.4303</span>,
-            -<span class="number">0.2833</span>, -<span class="number">0.0099</span>, -<span class="number">0.1637</span>, -<span class="number">0.1538</span>, -<span class="number">0.2315</span>, -<span class="number">0.3206</span>, -<span class="number">0.3503</span>, -<span class="number">0.0373</span>, -<span class="number">0.0876</span>, -<span class="number">0.1919</span>
+        "<span class="hljs-attribute">date_time</span>" : <span class="hljs-value"><span class="hljs-string">"2010-06-28T00:27:58+00:00"</span></span>,
+        "<span class="hljs-attribute">direction</span>" : <span class="hljs-value">-<span class="hljs-number">162.87</span></span>,
+        "<span class="hljs-attribute">y_acceleration</span>" : <span class="hljs-value">[
+            -<span class="hljs-number">0.0358</span>, -<span class="hljs-number">0.3115</span>, -<span class="hljs-number">0.281</span>, -<span class="hljs-number">0.3077</span>, <span class="hljs-number">0.032</span>, -<span class="hljs-number">0.1013</span>, <span class="hljs-number">0.0251</span>, -<span class="hljs-number">0.2163</span>, -<span class="hljs-number">0.4037</span>, -<span class="hljs-number">0.3968</span>,
+            -<span class="hljs-number">0.1569</span>, <span class="hljs-number">0.0244</span>, -<span class="hljs-number">0.2148</span>, -<span class="hljs-number">0.1752</span>, -<span class="hljs-number">0.3511</span>, -<span class="hljs-number">0.3846</span>, -<span class="hljs-number">0.3077</span>, -<span class="hljs-number">0.0183</span>, -<span class="hljs-number">0.2087</span>, -<span class="hljs-number">0.179</span>,
+            -<span class="hljs-number">0.0708</span>, -<span class="hljs-number">0.2331</span>, -<span class="hljs-number">0.3503</span>, -<span class="hljs-number">0.2445</span>, <span class="hljs-number">0.0571</span>, -<span class="hljs-number">0.1889</span>, -<span class="hljs-number">0.2254</span>, -<span class="hljs-number">0.0838</span>, -<span class="hljs-number">0.3222</span>, -<span class="hljs-number">0.4303</span>,
+            -<span class="hljs-number">0.2833</span>, -<span class="hljs-number">0.0099</span>, -<span class="hljs-number">0.1637</span>, -<span class="hljs-number">0.1538</span>, -<span class="hljs-number">0.2315</span>, -<span class="hljs-number">0.3206</span>, -<span class="hljs-number">0.3503</span>, -<span class="hljs-number">0.0373</span>, -<span class="hljs-number">0.0876</span>, -<span class="hljs-number">0.1919</span>
         ]</span>,
-        "<span class="attribute">tdirection</span>" : <span class="value"><span class="number">14.31</span></span>,
-        "<span class="attribute">speed</span>" : <span class="value"><span class="number">12.51012</span></span>,
-        "<span class="attribute">lon</span>" : <span class="value"><span class="number">4.73637</span></span>,
-        "<span class="attribute">temperature</span>" : <span class="value"><span class="number">17.4</span></span>,
-        "<span class="attribute">altitude</span>" : <span class="value"><span class="number">19</span>
+        "<span class="hljs-attribute">tdirection</span>" : <span class="hljs-value"><span class="hljs-number">14.31</span></span>,
+        "<span class="hljs-attribute">speed</span>" : <span class="hljs-value"><span class="hljs-number">12.51012</span></span>,
+        "<span class="hljs-attribute">lon</span>" : <span class="hljs-value"><span class="hljs-number">4.73637</span></span>,
+        "<span class="hljs-attribute">temperature</span>" : <span class="hljs-value"><span class="hljs-number">17.4</span></span>,
+        "<span class="hljs-attribute">altitude</span>" : <span class="hljs-value"><span class="hljs-number">19</span>
     </span>}
 ]
 </code></pre></li></ul></section><h4 id="-classification-job">Classification job&nbsp;<a href="#-classification-job"><i class="fa fa-link"></i></a></h4><p>Classification job generated with eEcology-Classification tool.</p>
-<section id="-classification-job-get" class="panel panel-info"><div class="panel-heading"><span style="text-transform: lowercase" class="pull-right">Retrieve classification job</span><a href="#-classification-job-get" class="btn btn-xs btn-primary">GET</a>&nbsp;<code>/job/{job}</code></div><div class="panel-body"><p>To open a job in the annotation tool use <a href="https://annotation.e-ecology.cloudlet.sara.nl/aws/static/#job=1">https://annotation.e-ecology.cloudlet.sara.nl/aws/static/#job=1</a></p>
+<section id="-classification-job-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve classification job</span></div><div style="float:left"><a href="#-classification-job-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/job/{job}</code></div></div><div class="panel-body"><p>To open a job in the annotation tool use <a href="https://annotation.e-ecology.cloudlet.sara.nl/aws/static/#job=1">https://annotation.e-ecology.cloudlet.sara.nl/aws/static/#job=1</a></p>
 </div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>job</dt><dd><code>number</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>1</span></span><p>Job identifier.</p>
-</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#723982" class="pull-right">Toggle</a></li><li id="723982" class="list-group-item collapse"><h5>Headers</h5><pre><code><span class="attribute">Content-Type</span>: <span class="string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
-    "<span class="attribute">tracker</span>": <span class="value">{
-        "<span class="attribute">id</span>": <span class="value"><span class="number">355</span></span>,
-        "<span class="attribute">start</span>": <span class="value"><span class="string">"2010-06-28T00:00:00.000Z"</span></span>,
-        "<span class="attribute">end</span>": <span class="value"><span class="string">"2010-06-29T00:00:00.000Z"</span>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#7f59e0798cb8ef896107b93bcf55aab2" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="7f59e0798cb8ef896107b93bcf55aab2" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code>{
+    "<span class="hljs-attribute">tracker</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">355</span></span>,
+        "<span class="hljs-attribute">start</span>": <span class="hljs-value"><span class="hljs-string">"2010-06-28T00:00:00.000Z"</span></span>,
+        "<span class="hljs-attribute">end</span>": <span class="hljs-value"><span class="hljs-string">"2010-06-29T00:00:00.000Z"</span>
     </span>}</span>,
-    "<span class="attribute">classifier</span>": <span class="value">{
-        "<span class="attribute">labels</span>": <span class="value">[{
-            "<span class="attribute">id</span>": <span class="value"><span class="number">1</span></span>,
-            "<span class="attribute">label</span>": <span class="value"><span class="string">"flying"</span></span>,
-            "<span class="attribute">color</span>": <span class="value"><span class="string">"rgb(255,0,0)"</span>
+    "<span class="hljs-attribute">classifier</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">labels</span>": <span class="hljs-value">[{
+            "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
+            "<span class="hljs-attribute">label</span>": <span class="hljs-value"><span class="hljs-string">"flying"</span></span>,
+            "<span class="hljs-attribute">color</span>": <span class="hljs-value"><span class="hljs-string">"rgb(255,0,0)"</span>
         </span>}]
     </span>}</span>,
-    "<span class="attribute">classifications</span>": <span class="value">[{
-        "<span class="attribute">ts</span>": <span class="value"><span class="string">"2010-06-28T00:27:58+00:00"</span></span>,
-        "<span class="attribute">class</span>": <span class="value"><span class="number">1</span>
+    "<span class="hljs-attribute">classifications</span>": <span class="hljs-value">[{
+        "<span class="hljs-attribute">ts</span>": <span class="hljs-value"><span class="hljs-string">"2010-06-28T00:27:58+00:00"</span></span>,
+        "<span class="hljs-attribute">class</span>": <span class="hljs-value"><span class="hljs-number">1</span>
     </span>}]
 </span>}
-</code></pre></li></ul></section></div></div></div></div></div></div><p style="text-align: center;" class="text-muted">Generated by <a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a> on 23 Jun 2014</p><div id="localFile" style="display: none; position: absolute; top: 0; left: 0; width: 100%; color: white; background: red; font-size: 150%; text-align: center; padding: 1em;">This page may not display correctly when opened as a local file. Instead, view it from a web server.
+</code></pre></li></ul></section><h4 id="-annotations">Annotations&nbsp;<a href="#-annotations"><i class="fa fa-link"></i></a></h4><section id="-annotations-get" class="panel panel-info"><div class="panel-heading"><div style="float:right"><span style="text-transform: lowercase">Retrieve annotations</span></div><div style="float:left"><a href="#-annotations-get" class="btn btn-xs btn-primary">GET</a></div><div style="overflow:hidden"><code>/uploads/{table}/annotations.csv?id={tracker}&amp;start={start}&amp;end={end}</code></div></div><ul class="list-group"><li class="list-group-item bg-default"><strong>Parameters</strong></li><li class="list-group-item"><dl class="dl-horizontal"><dt>table</dt><dd><code>number</code>&nbsp;<span class="required">(required)</span>&nbsp;<p>Postgresql schema and table which contains annotations.</p>
+</dd><dt>tracker</dt><dd><code>number</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>355</span></span><p>Tracker identifier.</p>
+</dd><dt>start</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>2010-06-28T00:00:00.000Z</span></span><p>Start of track.</p>
+</dd><dt>end</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>2010-06-29T00:00:00.000Z</span></span><p>End of track.</p>
+</dd></dl></li></ul><ul class="list-group"><li class="list-group-item"><strong>Response&nbsp;&nbsp;<code>200</code></strong><a data-toggle="collapse" data-target="#2d48f7feddd362f11ddaa2eba8973e95" class="pull-right collapsed"><span class="closed">Show</span><span class="open">Hide</span></a></li><li id="2d48f7feddd362f11ddaa2eba8973e95" class="list-group-item panel-collapse collapse"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span><br></code></pre><h5>Body</h5><pre><code><span class="hljs-tag">device_info_serial</span>, <span class="hljs-tag">date_time</span>, <span class="hljs-tag">class_id</span>
+355,2010<span class="hljs-tag">-06-28T02</span><span class="hljs-pseudo">:13</span><span class="hljs-pseudo">:20+00</span><span class="hljs-pseudo">:00</span>,3
+</code></pre></li></ul></section></div></div></div></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 09 Feb 2015</p><div id="localFile" style="display: none; position: absolute; top: 0; left: 0; width: 100%; color: white; background: red; font-size: 150%; text-align: center; padding: 1em;">This page may not display correctly when opened as a local file. Instead, view it from a web server.
 
-</div></body><script src="//code.jquery.com/jquery-1.10.1.min.js"></script><script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script><script type="text/javascript">
-(function() {
+</div></body><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script><script>(function() {
   if (location.protocol === 'file:') {
     document.getElementById('localFile').style.display = 'block';
   }
 
 }).call(this);
-</script><script type="text/javascript">
-(function() {
+</script><script>(function() {
   $('table').addClass('table');
 
 }).call(this);
