@@ -78,7 +78,6 @@ Docker build
 ### Construct image
 
 1. Install User interface in `annotation/static/TrackAnnot` folder.
-1.1. Optionallly make TrackAnnot smaller by stripping unneeded folders from Cesium library, only Build/Cesium is needed.
 2. `sudo docker build -t sverhoeven/annotation:1.0.0-db3 .`
 3. Export or push to registry
 
