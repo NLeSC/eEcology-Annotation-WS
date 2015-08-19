@@ -87,7 +87,7 @@ class UploadViews(object):
         ORDER BY
           device_info_serial, date_time
         '''
-        logger.debug('Fetching annotations for id:{}, start:{}, end:{}'.format(tracker_id, start, end))
+        logger.debug('Fetching annotations for id:{0}, start:{1}, end:{2}'.format(tracker_id, start, end))
         sql = sql_template.format(table=self.table)
         cursor.execute(sql, {'tracker': tracker_id,
                              'start': start,
