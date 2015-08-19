@@ -161,7 +161,7 @@ class UploadViewsTest(unittest.TestCase):
                                   'first_page': datetime(2010, 6, 28, 10, 0, 0, 0, UTC),
                                   'id': 355,
                                   'last_page': datetime(2010, 6, 28, 10, 0, 0, 0, UTC),
-                                  'page_size': 5000,
+                                  'page_size': 500,
                                   'size': 1,
                                   'start': datetime(2010, 6, 28, 0, 0, 0, 0, UTC)
                                   }]
@@ -189,7 +189,7 @@ class UploadViewsTest(unittest.TestCase):
                                   'first_page': datetime(2010, 6, 28, 12, 0, 0, 0, UTC),
                                   'id': 355,
                                   'last_page': datetime(2010, 6, 28, 0, 0, 0, 0, UTC),
-                                  'page_size': 5000,
+                                  'page_size': 500,
                                   'size': 1,
                                   'start': datetime(2010, 6, 28, 0, 0, 0, 0, UTC)
                                   }]
@@ -249,4 +249,3 @@ class UploadViewsTest(unittest.TestCase):
 
         expected_body = 'device_info_serial,date_time,class_id\n355,2010-06-28T00:00:00+00:00Z,3\n'
         self.assertEqual(response.body, expected_body)
-
