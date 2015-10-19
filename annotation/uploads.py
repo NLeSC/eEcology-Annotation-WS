@@ -68,7 +68,7 @@ class UploadViews(object):
         trackers = cursor.fetchall()
         for tracker in trackers:
             tracker['size'] = self.track_size(tracker['id'], tracker['start'], tracker['end'])
-            tracker['page_size'] = 5000
+            tracker['page_size'] = 500
             tracker['first_page'] = self.ts_track_after(tracker['id'], tracker['start'], tracker['end'], tracker['page_size'])
             tracker['last_page'] = self.ts_track_before(tracker['id'], tracker['start'], tracker['end'], tracker['page_size'])
         return trackers
@@ -87,7 +87,7 @@ class UploadViews(object):
         ORDER BY
           device_info_serial, date_time
         '''
-        logger.debug('Fetching annotations for id:{}, start:{}, end:{}'.format(tracker_id, start, end))
+        logger.debug('Fetching annotations for id:{0}, start:{1}, end:{2}'.format(tracker_id, start, end))
         sql = sql_template.format(table=self.table)
         cursor.execute(sql, {'tracker': tracker_id,
                              'start': start,

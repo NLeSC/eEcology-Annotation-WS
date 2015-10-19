@@ -97,7 +97,7 @@ def fetch_track(cur, tracker_id, start, end):
     ORDER BY date_time
     """
 
-    logger.debug('Fetching track data for id:{}, start:{}, end:{}'.format(tracker_id, start, end))
+    logger.debug('Fetching track data for id:{0}, start:{1}, end:{2}'.format(tracker_id, start, end))
     cur.execute(sql2, (freq, tracker_id, start, end, tracker_id, start, end))
     return cur
 
