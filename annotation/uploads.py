@@ -59,7 +59,7 @@ class UploadViews(object):
           TIMEZONE('zulu', MIN(date_time)) AS start,
           TIMEZONE('zulu', MAX(date_time)) AS end,
         COUNT(*) AS count
-        FROM {table}
+        FROM "{table}"
         GROUP BY device_info_serial
         ORDER BY device_info_serial
         """
@@ -79,7 +79,7 @@ class UploadViews(object):
           device_info_serial,
           date_time,
           class_id
-        FROM {table}
+        FROM "{table}"
         WHERE
           device_info_serial=%(tracker)s
         AND
