@@ -63,7 +63,7 @@ class UploadViews(object):
         GROUP BY device_info_serial
         ORDER BY device_info_serial
         """
-        sql = sql_template.format(table=self.table)
+        sql = sql_template.format(table=self.table.replace('.', '"."'))
         cursor.execute(sql)
         trackers = cursor.fetchall()
         for tracker in trackers:
@@ -88,7 +88,7 @@ class UploadViews(object):
           device_info_serial, date_time
         '''
         logger.debug('Fetching annotations for id:{0}, start:{1}, end:{2}'.format(tracker_id, start, end))
-        sql = sql_template.format(table=self.table)
+        sql = sql_template.format(table=self.table.replace('.', '"."'))
         cursor.execute(sql, {'tracker': tracker_id,
                              'start': start,
                              'end': end,
