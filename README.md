@@ -4,6 +4,7 @@ eEcology-Annotation-WS
 [![Build Status](https://travis-ci.org/NLeSC/eEcology-Annotation-WS.svg?branch=master)](https://travis-ci.org/NLeSC/eEcology-Annotation-WS)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/NLeSC/eEcology-Annotation-WS/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/NLeSC/eEcology-Annotation-WS/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/NLeSC/eEcology-Annotation-WS/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/NLeSC/eEcology-Annotation-WS/?branch=master)
+[![DOI](https://zenodo.org/badge/19641/NLeSC/eEcology-Annotation-WS.svg)](https://zenodo.org/badge/latestdoi/19641/NLeSC/eEcology-Annotation-WS)
 
 Webservice for eEcology Annotation project.
 
