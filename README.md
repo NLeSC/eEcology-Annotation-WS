@@ -11,6 +11,10 @@ Webservice for eEcology Annotation project.
 Start development server
 -------------------------
 
+Requirements:
+  * Python 2.7, use [Miniconda](http://conda.pydata.org/miniconda.html) when Python version is too old.
+  * psycopg2 Python package or Postgresql header files
+
     python setup.py develop
     cp development.ini-dist development.ini
     # adjust database settings
