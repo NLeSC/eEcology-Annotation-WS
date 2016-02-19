@@ -95,7 +95,7 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application. """
     config = Configurator(settings=settings)
     config.add_request_method(get_user, 'user', reify=True)
-    authen = RemoteUserAuthenticationPolicy('HTTP_REMOTE_USER')
+    authen = RemoteUserAuthenticationPolicy('HTTP_X_PROXY_REMOTE_USER')
     config.set_authentication_policy(authen)
     config.set_default_permission('view')
     config.set_authorization_policy(ACLAuthorizationPolicy())
