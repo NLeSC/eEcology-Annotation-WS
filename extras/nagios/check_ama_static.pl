@@ -4,11 +4,11 @@ use strict;
 
 my $wget = '/usr/bin/wget --user=guest --password=guest --output-document=tmp_html --no-check-certificate -S';
 # Devel url
-my $url = 'https://annotation.e-ecology.cloudlet.sara.nl/aws/static/table.js';
+#my $url = 'https://annotation.e-ecology.cloudlet.sara.nl/aws/static/table.js';
 # Staging url
 # my $url = 'https://public-dev.e-ecology.sara.nl/aws/static/table.js';
 # Production url
-# my $url = 'https://public.e-ecology.sara.nl/aws/static/table.js';
+my $url = 'https://services.e-ecology.sara.nl/aws/static/table.js';
 my @OK = ("200");
 my @WARN = ("400", "401", "403", "404", "408");
 my @CRITICAL = ("500", "501", "502", "503", "504");
