@@ -36,7 +36,7 @@
             Location of GPS tracker plotted in 3D and 2D.
         </p>
         <p>
-            Using <a href="http://www.cesiumjs.org">Cesium</a> or <a href="http://earth.google.com">Google Earth</a> or <a href="http://maps.google.com">Google Maps</a>
+            Using <a href="http://www.cesiumjs.org">Cesium</a> or <a href="http://maps.google.com">Google Maps</a>
         </p>
     </div>
     <div class="col-md-4">
