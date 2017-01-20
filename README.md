@@ -1,8 +1,8 @@
 eEcology-Annotation-WS
 ======================
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8c74f996b0d9431e9e0eca99be21799f)](https://www.codacy.com/app/sverhoeven/eEcology-Annotation-WS?utm_source=github.com&utm_medium=referral&utm_content=NLeSC/eEcology-Annotation-WS&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/NLeSC/eEcology-Annotation-WS.svg?branch=master)](https://travis-ci.org/NLeSC/eEcology-Annotation-WS)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8c74f996b0d9431e9e0eca99be21799f)](https://www.codacy.com/app/sverhoeven/eEcology-Annotation-WS?utm_source=github.com&utm_medium=referral&utm_content=NLeSC/eEcology-Annotation-WS&utm_campaign=badger)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/NLeSC/eEcology-Annotation-WS/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/NLeSC/eEcology-Annotation-WS/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/NLeSC/eEcology-Annotation-WS/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/NLeSC/eEcology-Annotation-WS/?branch=master)
 [![DOI](https://zenodo.org/badge/19641/NLeSC/eEcology-Annotation-WS.svg)](https://zenodo.org/badge/latestdoi/19641/NLeSC/eEcology-Annotation-WS)
