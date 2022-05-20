@@ -56,7 +56,7 @@ That folder has compiled/minimized javascript, the source/un-minimized version c
 Timeouts
 --------
 
-The fetch track data from the database can take a while to do. The webserver can timeout, causing the fetching to stopped prematurely.
+The fetch track data from the database can take a while to do. The webserver can timeout, causing the fetching to stop prematurely.
 
 Configure apache to allow for longer request handling by addding to httpd config:
 
